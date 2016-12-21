@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
+using OnlineCourseCommunity.App_Start;
 using OnlineCourseCommunity.Providers;
 using Owin;
 using System;
@@ -18,6 +19,7 @@ namespace OnlineCourseCommunity
             ConfigureOAuth(app);
 
             HttpConfiguration config = new HttpConfiguration();
+            config.DependencyResolver = new NinjectResolver(NinjectConfig.CreateKernel());
             WebApiConfig.Register(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
@@ -31,6 +33,7 @@ namespace OnlineCourseCommunity
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
                 Provider = new SimpleAuthorizationServerProvider()
             };
+
 
             app.UseOAuthAuthorizationServer(OAuthServerOptions);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
