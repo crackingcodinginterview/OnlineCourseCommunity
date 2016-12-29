@@ -1,4 +1,5 @@
-﻿using OnlineCourseCommunity.Library.Data.Mapping;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using OnlineCourseCommunity.Library.Data.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,7 +9,7 @@ using System.Web;
 
 namespace OnlineCourseCommunity.Library.Data
 {
-    public class Context : DbContext
+    public class Context : IdentityDbContext
     {
         public Context()
             : base("Context")
@@ -19,7 +20,13 @@ namespace OnlineCourseCommunity.Library.Data
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            modelBuilder.Configurations.Add(new UserMapping());
+            modelBuilder.Configurations.Add(new UserConfiguration());
+            modelBuilder.Configurations.Add(new RolesConfiguration());
+            modelBuilder.Configurations.Add(new UserClaimsConfiguration());
+            modelBuilder.Configurations.Add(new UserLoginsConfiguration());
+            modelBuilder.Configurations.Add(new UserRoleConfiguration());
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

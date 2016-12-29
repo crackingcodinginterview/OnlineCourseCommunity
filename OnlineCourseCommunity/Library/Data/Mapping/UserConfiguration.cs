@@ -7,11 +7,15 @@ using System.Web;
 
 namespace OnlineCourseCommunity.Library.Data.Mapping
 {
-    public class UserMapping : EntityTypeConfiguration<User>
+    public class UserConfiguration : EntityTypeConfiguration<User>
     {
-        public UserMapping()
+        public string TableName
         {
-
+            get { return "Users"; }
+        }
+        public UserConfiguration()
+        {
+            this.ToTable(TableName);
         }
     }
 }

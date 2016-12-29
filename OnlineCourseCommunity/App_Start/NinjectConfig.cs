@@ -12,14 +12,19 @@ namespace OnlineCourseCommunity.App_Start
 {
     public static class NinjectConfig
     {
+        private static IKernel _kernel;
         public static IKernel CreateKernel()
         {
-            var kernel = new StandardKernel();
-            //Create the bindings
-            kernel.Bind<DbContext>().To<Context>();
-            kernel.Bind<IUserService>().To<UserService>();
+            _kernel = new StandardKernel();
 
-            return kernel;
+            _kernel.Bind<DbContext>().To<Context>();
+            _kernel.Bind<IUserService>().To<UserService>();
+
+            return _kernel;
+        }
+        public static IKernel GetKernel()
+        {
+            return _kernel;
         }
     }
 }

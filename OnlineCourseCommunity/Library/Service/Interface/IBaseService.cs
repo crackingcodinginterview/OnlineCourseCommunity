@@ -9,10 +9,10 @@ namespace OnlineCourseCommunity.Library.Service.Interface
 {
     public interface IBaseService<TEntity> where TEntity : BaseEntity
     {
+        Task<TEntity> CreateAsync(TEntity entity);
+        Task<bool> DeleteAsync(TEntity entity);
         Task<IList<TEntity>> GetAllAsync();
-        Task<TEntity> GetById();
-        Task<TEntity> CreateAsync();
-        Task<TEntity> UpdateAsync();
-        Task<bool> DeleteAsync();
+        Task<TEntity> GetById(string id);
+        Task<TEntity> UpdateAsync(TEntity entity);
     }
 }
