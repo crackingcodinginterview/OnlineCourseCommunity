@@ -11,9 +11,11 @@ using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using static OnlineCourseCommunity.Models.Account.AccountViewModel;
 using Microsoft.AspNet.Identity;
+using OnlineCourseCommunity.ActionResult;
 
 namespace OnlineCourseCommunity.Controllers
 {
+    [RoutePrefix("api/Users")]
     public class UsersController : BaseController
     {
         private readonly IUserService _userService;
@@ -29,7 +31,20 @@ namespace OnlineCourseCommunity.Controllers
         //{
         //    return "aaa";
         //}
-        
+        [HttpGet]
+        [OverrideAuthentication]
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
+        [AllowAnonymous]
+        [Route("ExternalLogin", Name = "ExternalLogin")]
+        public async Task<IHttpActionResult> GetExternalLogin(string provider, string error = null)
+        {
+            if(!User.Identity.IsAuthenticated)
+            {
+                return new ChallengeResult(provider, this);
+            }
+            return Ok("WTF");
+        }
+
         [HttpGet]
         [Authorize]
         public async Task<HttpResponseMessage> GetProfile()

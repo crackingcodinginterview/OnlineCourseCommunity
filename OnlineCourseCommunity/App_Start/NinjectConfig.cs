@@ -22,9 +22,5 @@ namespace OnlineCourseCommunity.App_Start
 
             return _kernel;
         }
-        public static IKernel GetKernel()
-        {
-            return _kernel;
-        }
     }
 }
