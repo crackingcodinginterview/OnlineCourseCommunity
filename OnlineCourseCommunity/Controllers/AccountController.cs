@@ -9,44 +9,70 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
-using static OnlineCourseCommunity.Models.Account.AccountViewModel;
 using Microsoft.AspNet.Identity;
 using OnlineCourseCommunity.ActionResult;
+using System.Security.Claims;
+using Swashbuckle.Swagger.Annotations;
 
 namespace OnlineCourseCommunity.Controllers
 {
-    [RoutePrefix("api/Users")]
-    public class UsersController : BaseController
+    [RoutePrefix("api/Account")]
+    public class AccountController : BaseController
     {
         private readonly IUserService _userService;
 
-        public UsersController(IUserService userService)
+        public AccountController(IUserService userService)
         {
             this._userService = userService;
         }
 
-        //[HttpGet]
-        //[Authorize(Roles = "USER")]
-        //public string testUser()
-        //{
-        //    return "aaa";
-        //}
+        /// <summary>
+        /// Use for facebook login
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <param name="error"></param>
+        /// <returns></returns>
         [HttpGet]
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
         [AllowAnonymous]
         [Route("ExternalLogin", Name = "ExternalLogin")]
+        [SwaggerResponse(200, "Auto redirect to callback url")]
+        [SwaggerResponse(400, "Bad request")]
+        [SwaggerResponse(401, "Don't have permission")]
+        [SwaggerResponse(500, "Internal Server Error")]
         public async Task<IHttpActionResult> GetExternalLogin(string provider, string error = null)
         {
+            if(error != null)
+            {
+                return BadRequest(Uri.EscapeDataString(error));
+            }
             if(!User.Identity.IsAuthenticated)
             {
                 return new ChallengeResult(provider, this);
             }
-            return Ok("WTF");
+            var claimIdentity = User.Identity as ClaimsIdentity;
+            Library.Core.Domain.Authentication.User user = null;
+            var facebookLoginModel = new FacebookLoginModel(claimIdentity);
+            var redirectUri = string.Format("{0}#access_token={1}&provider={2}&has_local_account={3}&username={4}",
+                "http://localhost:63342/FormNopBai/forms.html?_ijt=qf319aqdvi1e0r34k9fthjf1ss/",
+                facebookLoginModel.AccessToken,
+                facebookLoginModel.Provider,
+                false,
+                facebookLoginModel.UserName);
+            return Redirect(redirectUri);
         }
-
+        /// <summary>
+        /// Return profile of current user
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
+        [Route("GetProfile", Name = "GetProfile")]
+        [SwaggerResponse(200, "Return profile of current user", typeof(ProfileResponseModel))]
+        [SwaggerResponse(400, "Bad request")]
+        [SwaggerResponse(401, "Don't have permission")]
+        [SwaggerResponse(500, "Internal Server Error")]
         public async Task<HttpResponseMessage> GetProfile()
         {
             var res = new ProfileResponseModel();
@@ -69,10 +95,19 @@ namespace OnlineCourseCommunity.Controllers
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
             }
         }
-
+        /// <summary>
+        /// Register new user
+        /// </summary>
+        /// <param name="loginModel"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public async Task<HttpResponseMessage> Register([FromBody]AccountBindingModel loginModel)
+        [Route("Register", Name = "Register")]
+        [SwaggerResponse(200, "Register new user", typeof(RegisterResponseModel))]
+        [SwaggerResponse(400, "Bad request")]
+        [SwaggerResponse(401, "Don't have permission")]
+        [SwaggerResponse(500, "Internal Server Error")]
+        public async Task<HttpResponseMessage> Register([FromBody]RegisterBindingModel loginModel)
         {
             var res = new RegisterResponseModel();
             try

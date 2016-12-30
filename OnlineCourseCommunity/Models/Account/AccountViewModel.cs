@@ -3,34 +3,45 @@ using OnlineCourseCommunity.Library.Core.Domain.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Http.Results;
 
 namespace OnlineCourseCommunity.Models.Account
 {
-    public class AccountViewModel
+    public class RegisterResponseModel : HmJsonResult
     {
-        public class RegisterResponseModel : HmJsonResult
+        public RegisterResponseModel()
         {
-            public RegisterResponseModel()
-            {
-                Success = false;
-            }
+            Success = false;
         }
-        public class ProfileResponseModel : HmJsonResult
+    }
+    public class ProfileResponseModel : HmJsonResult
+    {
+        /// <summary>
+        /// Id of user
+        /// </summary>
+        public string Id { get; set; }
+        /// <summary>
+        /// UserName
+        /// </summary>
+        public string Username { get; set; }
+        public ProfileResponseModel()
         {
-            public ProfileResponseModel()
-            {
 
-            }
-            public void Import(User user)
+        }
+        public ProfileResponseModel(User user)
+        {
+            this.Import(user);
+        }
+
+        public void Import(User user)
+        {
+            base.Data = new
             {
-                base.Data = new 
-                {
-                    Id = user.Id,
-                    UserName = user.UserName
-                };
-            }
+                Id = Id,
+                UserName = Username
+            };
         }
     }
 }

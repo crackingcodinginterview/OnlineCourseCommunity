@@ -6,11 +6,17 @@ using System.Web;
 
 namespace OnlineCourseCommunity.Models.Account
 {
-    public class AccountBindingModel
+    public class RegisterBindingModel
     {
+        /// <summary>
+        /// Username
+        /// </summary>
         [Required(ErrorMessage = "UserName is required")]
         public string UserName { get; set; }
 
+        /// <summary>
+        /// Password
+        /// </summary>
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
     }

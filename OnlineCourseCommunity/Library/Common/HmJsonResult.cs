@@ -7,14 +7,21 @@ namespace OnlineCourseCommunity.Library.Common
 {
     public abstract class HmJsonResult
     {
+        /// <summary>
+        /// Success flag
+        /// </summary>
         public bool Success { get; set; }
-
+        /// <summary>
+        /// List error messages
+        /// </summary>
         public List<string> ErrorMessages
         {
             get;
             set;
         }
-
+        /// <summary>
+        /// Data model response
+        /// </summary>
         public object Data { get; set; }
 
         protected HmJsonResult()
