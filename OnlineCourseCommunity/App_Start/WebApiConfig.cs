@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Serialization;
+using OnlineCourseCommunity.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace OnlineCourseCommunity
             config.EnableCors(cors);
             // Web API routes
             config.MapHttpAttributeRoutes();
-
+            config.Filters.Add(new ValidateModelAttribute());
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity;
 using OnlineCourseCommunity.ActionResult;
 using System.Security.Claims;
 using Swashbuckle.Swagger.Annotations;
+using OnlineCourseCommunity.Filters;
 
 namespace OnlineCourseCommunity.Controllers
 {
@@ -41,6 +42,7 @@ namespace OnlineCourseCommunity.Controllers
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
         [SwaggerResponse(500, "Internal Server Error")]
+        [ValidateModelAttribute]
         public async Task<IHttpActionResult> GetExternalLogin(string provider, string error = null)
         {
             if(error != null)
@@ -73,16 +75,12 @@ namespace OnlineCourseCommunity.Controllers
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
         [SwaggerResponse(500, "Internal Server Error")]
+        [ValidateModelAttribute]
         public async Task<HttpResponseMessage> GetProfile()
         {
             var res = new ProfileResponseModel();
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    res.ErrorMessages = base.GetModelErrorMessages(ModelState);
-                    return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
-                }
                 var userId = User.Identity.GetUserId();
                 var user = await this._userService.FindByIdAsync(userId);
                 res.Import(user);
@@ -107,16 +105,12 @@ namespace OnlineCourseCommunity.Controllers
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
         [SwaggerResponse(500, "Internal Server Error")]
+        [ValidateModelAttribute]
         public async Task<HttpResponseMessage> Register([FromBody]RegisterBindingModel loginModel)
         {
             var res = new RegisterResponseModel();
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    res.ErrorMessages = base.GetModelErrorMessages(ModelState);
-                    return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
-                }
                 await this._userService.RegisterUserAsync(loginModel.UserName, loginModel.Password);
                 res.Success = true;
                 return this.Request.CreateResponse(HttpStatusCode.OK, res);

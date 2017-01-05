@@ -5,7 +5,7 @@ using System.Web;
 
 namespace OnlineCourseCommunity.Library.Common
 {
-    public abstract class HmJsonResult
+    public class HmJsonResult
     {
         /// <summary>
         /// Success flag
@@ -24,7 +24,7 @@ namespace OnlineCourseCommunity.Library.Common
         /// </summary>
         public object Data { get; set; }
 
-        protected HmJsonResult()
+        public HmJsonResult()
         {
             ErrorMessages = new List<string>();
             Data = null;
