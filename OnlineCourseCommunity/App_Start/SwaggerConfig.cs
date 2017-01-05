@@ -19,8 +19,8 @@ namespace OnlineCourseCommunity
             GlobalConfiguration.Configuration 
                 .EnableSwagger(c =>
                     {
-                        //c.RootUrl(req => "http://localhost:62033");
-                        c.RootUrl(req => "http://onlinecoursecommunity.apphb.com");
+                        c.RootUrl(req => "http://localhost:62033");
+                        //c.RootUrl(req => "http://onlinecoursecommunity.apphb.com");
 
                         // By default, the service root url is inferred from the request used to access the docs.
                         // However, there may be situations (e.g. proxy and load-balanced environments) where this does not
@@ -280,17 +280,8 @@ namespace OnlineCourseCommunity
                                     example = new LoginResult
                                             {
                                                 access_token = "ve6oDw6vcKNAtBmjL9P6s4JTq1UKOlAB3p47",
-                                                refresh_token = "8f3fda22-5e1a-49b4-a1a8-99fd90c01d5f",
-                                                expires = "Sat, 28 Jan 2017 06:28:13 GMT",
-                                                client_id = "0645c9dc-6433-4ca9-a00f-787008b80b0b",
                                                 expires_in = 31535999,
                                                 token_type = "bearer",
-                                                userId="0c26e0f4-3f1d-4528-9f9d-99567a5f0b7e",
-                                                username="khanh.vu@newoceaninfosys.com",
-                                                firstName="firstName",
-                                                lastName ="lastName",
-                                                fullName="fullName" ,
-                                                areas="areas"
                                     },
 
                             } }
@@ -299,11 +290,6 @@ namespace OnlineCourseCommunity
 
                     summary = "Login",
                     tags = new List<string> { "Account" },
-                    description = " For native device, add \"<span style = 'font-weight: bold;' > Authorization: Basic xxx </span > \" into Header of request.<br />"
-                                + "For browser, add \"<span style='font-weight: bold;'>client_id</span>\" and \"<span style='font-weight: bold;'>client_secret</span>\" into body of request. <br />"
-                                + "<span style='font-weight: bold;'>client_secret</span>: cfb846bd-8220-4172-8663-af7faff95d6a  <br />"
-                                + "<span style='font-weight: bold;'>client_id</span>: f1c37899-1997-47e9-91d4-493e9dd286e8 <br />"
-                                + "<span style='font-weight: bold;'>basiccode</span>: ZjFjMzc4OTktMTk5Ny00N2U5LTkxZDQtNDkzZTlkZDI4NmU4OmNmYjg0NmJkLTgyMjAtNDE3Mi04NjYzLWFmN2ZhZmY5NWQ2YQ== ",
                     consumes = new List<string>
                     {
                         "application/x-www-form-urlencoded"
@@ -323,42 +309,16 @@ namespace OnlineCourseCommunity
                         type = "string",
                         name = "username",
                         required = true,
-                        description = "email address",
+                        description = "Enter username",
                         @in = "formData"
                     },
                     new Parameter
                     {
                         type = "string",
                         name = "password",
-                        description = "password",
+                        description = "Enter password",
                         required = true,
                         @in = "formData"
-                    },
-                     new Parameter
-                    {
-                        type = "string",
-                        name = "devicetoken",
-                        description = "devicetoken, using to identify the same device",
-                        required = false,
-                        @in = "formData"
-                    },
-                      new Parameter
-                    {
-                        type = "string",
-                        name = "client_id",
-                        description = "client_id",
-                        required = true,
-                        @in = "formData",
-                        @default = "f1c37899-1997-47e9-91d4-493e9dd286e8"
-                    },
-                    new Parameter
-                    {
-                        type = "string",
-                        name = "client_secret",
-                        description = "client_secret",
-                        required = true,
-                        @in = "formData",
-                        @default = "cfb846bd-8220-4172-8663-af7faff95d6a"
                     }
                 }
                 }

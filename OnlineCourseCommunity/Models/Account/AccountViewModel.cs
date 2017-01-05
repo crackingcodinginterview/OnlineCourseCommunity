@@ -18,14 +18,6 @@ namespace OnlineCourseCommunity.Models.Account
     }
     public class ProfileResponseModel : HmJsonResult
     {
-        /// <summary>
-        /// Id of user
-        /// </summary>
-        public string Id { get; set; }
-        /// <summary>
-        /// UserName
-        /// </summary>
-        public string Username { get; set; }
         public ProfileResponseModel()
         {
 
@@ -39,8 +31,8 @@ namespace OnlineCourseCommunity.Models.Account
         {
             base.Data = new
             {
-                Id = Id,
-                UserName = Username
+                Id = user.Id,
+                UserName = user.UserName
             };
         }
     }
