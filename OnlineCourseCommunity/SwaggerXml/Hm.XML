@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OnlineCourseCommunity</name>
+    </assembly>
+    <members>
+        <member name="T:OnlineCourseCommunity.LoginResult">
+            <summary>
+            Login result
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.LoginResult.access_token">
+            <summary>
+            access token
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.LoginResult.token_type">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.LoginResult.refresh_token">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.LoginResult.expires_in">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.LoginResult.client_id">
+            <summary>
+            as:client_id
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.LoginResult.username">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.LoginResult.userId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.LoginResult.issued">
+            <summary>
+            .issued
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.LoginResult.expires">
+            <summary>
+            expires
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.LoginResult.devicetoken">
+            <summary>
+            device token
+            </summary>
+        </member>
+        <member name="M:OnlineCourseCommunity.Controllers.AccountController.GetExternalLogin(System.String,System.String)">
+            <summary>
+            Use for facebook login
+            </summary>
+            <param name="provider"></param>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OnlineCourseCommunity.Controllers.AccountController.GetProfile">
+            <summary>
+            Return profile of current user
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OnlineCourseCommunity.Controllers.AccountController.Register(OnlineCourseCommunity.Models.Account.RegisterBindingModel)">
+            <summary>
+            Register new user
+            </summary>
+            <param name="loginModel"></param>
+            <returns></returns>
+        </member>
+        <member name="P:OnlineCourseCommunity.Library.Common.HmJsonResult.Success">
+            <summary>
+            Success flag
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.Library.Common.HmJsonResult.ErrorMessages">
+            <summary>
+            List error messages
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.Library.Common.HmJsonResult.Data">
+            <summary>
+            Data model response
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.Models.Account.RegisterBindingModel.UserName">
+            <summary>
+            Username
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.Models.Account.RegisterBindingModel.Password">
+            <summary>
+            Password
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.Models.Account.ProfileResponseModel.Id">
+            <summary>
+            Id of user
+            </summary>
+        </member>
+        <member name="P:OnlineCourseCommunity.Models.Account.ProfileResponseModel.Username">
+            <summary>
+            UserName
+            </summary>
+        </member>
+    </members>
+</doc>
