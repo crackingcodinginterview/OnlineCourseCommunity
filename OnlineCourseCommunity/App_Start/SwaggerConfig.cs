@@ -39,7 +39,7 @@ namespace OnlineCourseCommunity
                         // additional fields by chaining methods off SingleApiVersion.
                         //
                         c.SingleApiVersion("v1", "OnlineCourseCommunity");
-                        c.IncludeXmlComments(string.Format(@"{0}\SwaggerXml\Hm.XML",
+                        c.IncludeXmlComments(string.Format(@"{0}\bin\Hm.XML",
                            System.AppDomain.CurrentDomain.BaseDirectory));
                         c.DocumentFilter<AuthTokenOperation>();
                         // If your API has multiple versions, use "MultipleApiVersions" instead of "SingleApiVersion".
