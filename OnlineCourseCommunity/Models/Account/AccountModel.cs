@@ -16,6 +16,7 @@ namespace OnlineCourseCommunity.Models.Account
         public string AvatarUrl { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
 
         public FacebookDataModel()
         {
@@ -29,10 +30,12 @@ namespace OnlineCourseCommunity.Models.Account
         public void Import(ClaimsIdentity claimIdentity)
         {
             Claim providerKeyClaim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            UserName = claimIdentity.FindFirstValue(ClaimTypes.Name);
-            //var facebookUserID = claimIdentity.FindFirst(c => c.Type == "urn:facebook:id").Value;
-            //string profilePicturePath = string.Format("http://graph.facebook.com/{0}/picture?type=large", facebookUserID);
-            //AccessToken = claimIdentity.FindFirstValue("ExternalAccessToken");
+            AccessToken = claimIdentity.FindFirstValue("ExternalAccessToken");
+            AvatarUrl = claimIdentity.FindFirstValue("Avatar");
+            FirstName = claimIdentity.FindFirstValue("FirstName");
+            LastName = claimIdentity.FindFirstValue("LastName");
+            UserName = claimIdentity.FindFirstValue("Username");
+            Email = claimIdentity.FindFirstValue("Email");
             Provider = providerKeyClaim.Value;
             ProviderName = providerKeyClaim.Issuer;
         }

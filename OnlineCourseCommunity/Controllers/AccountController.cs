@@ -47,20 +47,31 @@ namespace OnlineCourseCommunity.Controllers
         [ValidateModelAttribute]
         public async Task<IHttpActionResult> GetExternalLogin(string provider, string error = null)
         {
-            if(error != null) return BadRequest(Uri.EscapeDataString(error));
-            if(!User.Identity.IsAuthenticated) return new ChallengeResult(provider, this);
-            var queryString = Request.GetQueryNameValuePairs();
-            var redirectUri = queryString.FirstOrDefault(keyValue => string.Compare(keyValue.Key, "redirectUri", true) == 0).Value;
-            var facebookLoginModel = new FacebookDataModel(User.Identity as ClaimsIdentity);
-            ApplicationUser user = await this._userService.FindUserAsync(facebookLoginModel.Provider, facebookLoginModel.ProviderName);
-            if (user == null)
-                user = await this._userService.RegisterUserAsync(facebookLoginModel.Provider, facebookLoginModel.ProviderName);
-            var localAccessToken = this._userService.GenerateLocalAccessTokenResponse(user);
-            redirectUri = string.Format("{0}#access_token={1}&provider={2}",
-                                redirectUri,
-                                localAccessToken,
-                                "Facebook");
-            return Redirect(redirectUri);
+            try
+            {
+                if (error != null)
+                    return BadRequest(Uri.EscapeDataString(error));
+                if (!User.Identity.IsAuthenticated)
+                    return new ChallengeResult(provider, this);
+                var queryString = Request.GetQueryNameValuePairs();
+                var redirectUri = queryString.FirstOrDefault(keyValue => string.Compare(keyValue.Key, "redirectUri", true) == 0).Value;
+                var facebookLoginModel = new FacebookDataModel(User.Identity as ClaimsIdentity);
+                ApplicationUser user = await this._userService.FindUserAsync(facebookLoginModel.Provider, facebookLoginModel.ProviderName);
+                if (user == null)
+                {
+                    user = new ApplicationUser(facebookLoginModel);
+                    user = await this._userService.RegisterUserAsync(user, facebookLoginModel.ProviderName);
+                }
+                var localAccessToken = this._userService.GenerateLocalAccessTokenResponse(user);
+                redirectUri = string.Format("{0}#access_token={1}",
+                                    redirectUri,
+                                    localAccessToken);
+                return Redirect(redirectUri);
+            }
+            catch(ApplicationException ex)
+            {
+                return BadRequest("Something went wrong!");
+            }
         }
         /// <summary>
         /// Return profile of current user

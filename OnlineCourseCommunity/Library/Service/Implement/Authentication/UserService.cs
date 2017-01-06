@@ -88,21 +88,6 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Authentication
             }
             return user;
         }
-        //public async Task<ApplicationUser> RegisterExternal(ApplicationUser user, string password)
-        //{
-        //    IdentityResult result = await this._userManager.CreateAsync(user);
-        //    if (!result.Succeeded)
-        //    {
-        //        throw new ApplicationException("aa");
-        //    }
-        //    var info = new ExternalLoginInfo()
-        //    {
-        //        DefaultUserName = user.UserName,
-        //        Login = new UserLoginInfo("Facebook", user.Id)
-        //    };
-        //    result = await _userManager.AddLoginAsync(user.Id, login);
-
-        //}
 
         public async Task<ApplicationUser> FindUserAsync(string userName, string password)
         {

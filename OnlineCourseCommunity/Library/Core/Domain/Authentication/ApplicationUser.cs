@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using OnlineCourseCommunity.Models.Account;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,5 +31,16 @@ namespace OnlineCourseCommunity.Library.Core.Domain.Authentication
         /// Money Left
         /// </summary>
         public int Money { get; set; }
+
+        public ApplicationUser()
+        {
+
+        }
+        public ApplicationUser(FacebookDataModel facebookDataModel)
+        {
+            LastName = facebookDataModel.LastName;
+            FirstName = facebookDataModel.FirstName;
+            PictureId = facebookDataModel.AvatarUrl;
+        }
     }
 }

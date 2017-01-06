@@ -1,4 +1,5 @@
-﻿using OnlineCourseCommunity.Library.Core.Domain.Authentication;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using OnlineCourseCommunity.Library.Core.Domain.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
