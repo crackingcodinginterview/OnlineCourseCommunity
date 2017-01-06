@@ -14,6 +14,8 @@ using OnlineCourseCommunity.ActionResult;
 using System.Security.Claims;
 using Swashbuckle.Swagger.Annotations;
 using OnlineCourseCommunity.Filters;
+using OnlineCourseCommunity.Library.Core.Domain.Authentication;
+using OnlineCourseCommunity.Models.User;
 
 namespace OnlineCourseCommunity.Controllers
 {
@@ -45,23 +47,19 @@ namespace OnlineCourseCommunity.Controllers
         [ValidateModelAttribute]
         public async Task<IHttpActionResult> GetExternalLogin(string provider, string error = null)
         {
-            if(error != null)
-            {
-                return BadRequest(Uri.EscapeDataString(error));
-            }
-            if(!User.Identity.IsAuthenticated)
-            {
-                return new ChallengeResult(provider, this);
-            }
-            var claimIdentity = User.Identity as ClaimsIdentity;
-            Library.Core.Domain.Authentication.User user = null;
-            var facebookLoginModel = new FacebookLoginModel(claimIdentity);
-            var redirectUri = string.Format("{0}#access_token={1}&provider={2}&has_local_account={3}&username={4}",
-                "http://localhost:63342/FormNopBai/forms.html?_ijt=qf319aqdvi1e0r34k9fthjf1ss/",
-                facebookLoginModel.AccessToken,
-                facebookLoginModel.Provider,
-                false,
-                facebookLoginModel.UserName);
+            if(error != null) return BadRequest(Uri.EscapeDataString(error));
+            if(!User.Identity.IsAuthenticated) return new ChallengeResult(provider, this);
+            var queryString = Request.GetQueryNameValuePairs();
+            var redirectUri = queryString.FirstOrDefault(keyValue => string.Compare(keyValue.Key, "redirectUri", true) == 0).Value;
+            var facebookLoginModel = new FacebookDataModel(User.Identity as ClaimsIdentity);
+            ApplicationUser user = await this._userService.FindUserAsync(facebookLoginModel.Provider, facebookLoginModel.ProviderName);
+            if (user == null)
+                user = await this._userService.RegisterUserAsync(facebookLoginModel.Provider, facebookLoginModel.ProviderName);
+            var localAccessToken = this._userService.GenerateLocalAccessTokenResponse(user);
+            redirectUri = string.Format("{0}#access_token={1}&provider={2}",
+                                redirectUri,
+                                localAccessToken,
+                                "Facebook");
             return Redirect(redirectUri);
         }
         /// <summary>
@@ -88,34 +86,6 @@ namespace OnlineCourseCommunity.Controllers
                 return this.Request.CreateResponse(HttpStatusCode.OK, res);
             }
             catch (ApplicationException ex)
-            {
-                res.ErrorMessages.Add(ex.Message);
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
-            }
-        }
-        /// <summary>
-        /// Register new user
-        /// </summary>
-        /// <param name="loginModel"></param>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("Register", Name = "Register")]
-        [SwaggerResponse(200, "Register new user", typeof(RegisterResponseModel))]
-        [SwaggerResponse(400, "Bad request")]
-        [SwaggerResponse(401, "Don't have permission")]
-        [SwaggerResponse(500, "Internal Server Error")]
-        [ValidateModelAttribute]
-        public async Task<HttpResponseMessage> Register([FromBody]RegisterBindingModel loginModel)
-        {
-            var res = new RegisterResponseModel();
-            try
-            {
-                await this._userService.RegisterUserAsync(loginModel.UserName, loginModel.Password);
-                res.Success = true;
-                return this.Request.CreateResponse(HttpStatusCode.OK, res);
-            }
-            catch(ApplicationException ex)
             {
                 res.ErrorMessages.Add(ex.Message);
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);

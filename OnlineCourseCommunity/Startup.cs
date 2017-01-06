@@ -13,6 +13,8 @@ using Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
@@ -21,6 +23,7 @@ namespace OnlineCourseCommunity
 {
     public class Startup
     {
+        public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
         public void Configuration(IAppBuilder app)
         {
             ConfigureOAuth(app);
@@ -34,7 +37,7 @@ namespace OnlineCourseCommunity
         public void ConfigureOAuth(IAppBuilder app)
         {
             app.UseExternalSignInCookie(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ExternalCookie);
-            var OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
+            OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
 
             var OAuthServerOptions = new OAuthAuthorizationServerOptions()
             {

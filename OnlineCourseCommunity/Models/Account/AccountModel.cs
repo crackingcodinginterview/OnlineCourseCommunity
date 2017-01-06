@@ -7,18 +7,21 @@ using System.Web;
 
 namespace OnlineCourseCommunity.Models.Account
 {
-    public class FacebookLoginModel
+    public class FacebookDataModel
     {
         public string UserName { get; set; }
         public string AccessToken { get; set; }
         public string Provider { get; set; }
         public string ProviderName { get; set; }
+        public string AvatarUrl { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
-        public FacebookLoginModel()
+        public FacebookDataModel()
         {
 
         }
-        public FacebookLoginModel(ClaimsIdentity claimIdentity)
+        public FacebookDataModel(ClaimsIdentity claimIdentity)
         {
             this.Import(claimIdentity);
         }
@@ -27,7 +30,9 @@ namespace OnlineCourseCommunity.Models.Account
         {
             Claim providerKeyClaim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
             UserName = claimIdentity.FindFirstValue(ClaimTypes.Name);
-            AccessToken = claimIdentity.FindFirstValue("ExternalAccessToken");
+            //var facebookUserID = claimIdentity.FindFirst(c => c.Type == "urn:facebook:id").Value;
+            //string profilePicturePath = string.Format("http://graph.facebook.com/{0}/picture?type=large", facebookUserID);
+            //AccessToken = claimIdentity.FindFirstValue("ExternalAccessToken");
             Provider = providerKeyClaim.Value;
             ProviderName = providerKeyClaim.Issuer;
         }
