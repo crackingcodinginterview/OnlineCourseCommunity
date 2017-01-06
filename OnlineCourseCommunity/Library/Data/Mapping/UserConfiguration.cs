@@ -8,7 +8,7 @@ using System.Web;
 
 namespace OnlineCourseCommunity.Library.Data.Mapping
 {
-    public class UserConfiguration : EntityTypeConfiguration<ApplicationUser>
+    public class UserConfiguration : EntityTypeConfiguration<IdentityUser>
     {
         public string TableName
         {

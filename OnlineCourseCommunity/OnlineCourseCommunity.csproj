@@ -214,12 +214,6 @@
   <ItemGroup>
     <Content Include="App_Readme\readme.txt" />
     <Content Include="Global.asax" />
-    <EmbeddedResource Include="Migrations\201701051501380_ChangeUserModel.resx">
-      <DependentUpon>201701051501380_ChangeUserModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701060937080_ChangeMappingOfUser.resx">
-      <DependentUpon>201701060937080_ChangeMappingOfUser.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SwaggerXml\SwaggerUIEnableBearerToken.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -238,7 +232,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Library\Common\HmJsonResult.cs" />
-    <Compile Include="Library\Core\Domain\Authentication\ApplicationUser.cs" />
     <Compile Include="Library\Core\Domain\Authentication\Profile.cs" />
     <Compile Include="Library\Core\Domain\BaseEntity.cs" />
     <Compile Include="Library\Core\Domain\Bussiness\Course.cs" />
@@ -254,19 +247,6 @@
     <Compile Include="Library\Service\Implement\BaseService.cs" />
     <Compile Include="Library\Service\Interface\Authentication\IUserService.cs" />
     <Compile Include="Library\Service\Interface\IBaseService.cs" />
-    <Compile Include="Migrations\201612290519007_Init.cs" />
-    <Compile Include="Migrations\201612290519007_Init.Designer.cs">
-      <DependentUpon>201612290519007_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701051501380_ChangeUserModel.cs" />
-    <Compile Include="Migrations\201701051501380_ChangeUserModel.Designer.cs">
-      <DependentUpon>201701051501380_ChangeUserModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701060937080_ChangeMappingOfUser.cs" />
-    <Compile Include="Migrations\201701060937080_ChangeMappingOfUser.Designer.cs">
-      <DependentUpon>201701060937080_ChangeMappingOfUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\AccountBindingModel.cs" />
     <Compile Include="Models\Account\AccountModel.cs" />
     <Compile Include="Models\Account\AccountViewModel.cs" />
@@ -294,11 +274,6 @@
     <Folder Include="Library\Service\Implement\Bussiness\" />
     <Folder Include="Library\Service\Interface\Bussiness\" />
     <Folder Include="Library\Service\Models\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201612290519007_Init.resx">
-      <DependentUpon>201612290519007_Init.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -25,6 +25,8 @@ namespace OnlineCourseCommunity.Library.Data
             modelBuilder.Configurations.Add(new UserClaimsConfiguration());
             modelBuilder.Configurations.Add(new UserLoginsConfiguration());
             modelBuilder.Configurations.Add(new UserRoleConfiguration());
+            modelBuilder.Configurations.Add(new CourseConfiguration());
+            modelBuilder.Configurations.Add(new ProfileConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
