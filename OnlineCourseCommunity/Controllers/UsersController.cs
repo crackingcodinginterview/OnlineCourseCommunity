@@ -32,17 +32,16 @@ namespace OnlineCourseCommunity.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "ADMIN")]
         [Route("")]
         [SwaggerResponse(200, "Return Profile List With Pagination", typeof(UserInforResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
         [SwaggerResponse(500, "Internal Server Error")]
         [ValidateModelAttribute]
-        public async Task<HttpResponseMessage> GetUserList()
+        public async Task<HttpResponseMessage> GetUserList(string keySort = null, bool orderDescending = true,
+            string keyWord = null, int pageIndex = 0, int? pageSize = null)
         {
-            var userId = User.Identity.GetUserId();
-            var role = await this._userService.GetRoleAsync(userId);
             var res = new UserInforResponseModel();
             try
             {
@@ -60,7 +59,7 @@ namespace OnlineCourseCommunity.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{userId}")]
-        [Authorize]
+        [Authorize(Roles = "ADMIN")]
         [SwaggerResponse(200, "Return profile of current user", typeof(UserInforResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]

@@ -111,7 +111,7 @@ namespace OnlineCourseCommunity.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("")]
-        [Authorize]
+        [Authorize(Roles = "ADMIN")]
         [SwaggerResponse(200, "Admin add new course to website", typeof(FullCourseResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
@@ -154,7 +154,7 @@ namespace OnlineCourseCommunity.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("{courseId}")]
-        [Authorize]
+        [Authorize(Roles = "ADMIN")]
         [SwaggerResponse(200, "Admin update a course information", typeof(FullCourseResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
@@ -198,7 +198,7 @@ namespace OnlineCourseCommunity.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{courseId}")]
-        [Authorize]
+        [Authorize(Roles = "ADMIN")]
         [SwaggerResponse(200, "Admin Delete Course", typeof(DeleteCourseResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
@@ -212,6 +212,7 @@ namespace OnlineCourseCommunity.Controllers
                 var course = await this._courseService.GetById(courseId);
                 if (course != null)
                 {
+                    await this._courseService.DeleteAsync(course);
                     res.Success = true;
                     return this.Request.CreateResponse(HttpStatusCode.OK, res);
                 }
@@ -269,6 +270,7 @@ namespace OnlineCourseCommunity.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("{courseId}/RateCourse")]
+        [Authorize]
         [SwaggerResponse(200, "User Rating A Course", typeof(IncreaseViewCountResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
@@ -284,6 +286,7 @@ namespace OnlineCourseCommunity.Controllers
                 {
                     course.Rating += ratingCoureBindingModel.Number;
                     await this._courseService.UpdateAsync(course);
+                    res.Import(course);
                     res.Success = true;
                     return this.Request.CreateResponse(HttpStatusCode.OK, res);
                 }
@@ -317,6 +320,7 @@ namespace OnlineCourseCommunity.Controllers
                 {
                     course.ViewCount += 1;
                     await this._courseService.UpdateAsync(course);
+                    res.Import(course);
                     res.Success = true;
                     return this.Request.CreateResponse(HttpStatusCode.OK, res);
                 }

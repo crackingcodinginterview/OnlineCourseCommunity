@@ -27,7 +27,7 @@ namespace OnlineCourseCommunity
         public void Configuration(IAppBuilder app)
         {
             ConfigureOAuth(app);
-
+            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             HttpConfiguration config = new HttpConfiguration();
             config.DependencyResolver = new NinjectResolver(NinjectConfig.CreateKernel());
             WebApiConfig.Register(config);

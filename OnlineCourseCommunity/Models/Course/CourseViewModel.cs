@@ -36,10 +36,35 @@ namespace OnlineCourseCommunity.Models.Course
         {
 
         }
+        public RatingCoureResponseModel(Library.Core.Domain.Bussiness.Course course)
+        {
+            this.Import(course);
+        }
+        public void Import(Library.Core.Domain.Bussiness.Course course)
+        {
+            base.Data = new
+            {
+                Rating = course.Rating
+            };
+        }
     }
     public class IncreaseViewCountResponseModel : HmJsonResult
     {
+        public IncreaseViewCountResponseModel()
+        {
 
+        }
+        public IncreaseViewCountResponseModel(Library.Core.Domain.Bussiness.Course course)
+        {
+            this.Import(course);
+        }
+        public void Import(Library.Core.Domain.Bussiness.Course course)
+        {
+            base.Data = new
+            {
+                ViewCount = course.ViewCount
+            };
+        }
     }
     public class CoureBoxModel
     {
