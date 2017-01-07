@@ -19,7 +19,6 @@ namespace OnlineCourseCommunity.Providers
             context.Identity.AddClaim(new Claim("FirstName", myInfo["first_name"].ToString()));
             context.Identity.AddClaim(new Claim("LastName", myInfo["last_name"].ToString()));
             context.Identity.AddClaim(new Claim("Avatar", ((myInfo["picture"] as IDictionary<string, object>)["data"] as IDictionary<string, object>)["url"].ToString()));
-            context.Identity.AddClaim(new Claim("Email", myInfo["email"].ToString()));
             context.Identity.AddClaim(new Claim("Id", myInfo["id"].ToString()));
             return Task.FromResult<object>(null);
         }

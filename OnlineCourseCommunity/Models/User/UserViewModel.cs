@@ -41,7 +41,6 @@ namespace OnlineCourseCommunity.Models.User
         {
             base.Data = new
             {
-                Email = profile.Email,
                 FullName = profile.FirstName + " " + profile.LastName,
                 Money = profile.Money,
                 PictureUrl = profile.AvatarUrl

@@ -11,7 +11,6 @@ namespace OnlineCourseCommunity.Library.Core.Domain.Authentication
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Email { get; set; }
         public string AvatarUrl { get; set; }
         public int Money { get; set; }
         public string UserId { get; set; }
@@ -19,7 +18,7 @@ namespace OnlineCourseCommunity.Library.Core.Domain.Authentication
         public virtual ICollection<Course> PurchaseCourseList { get; set; }
         public Profile()
         {
-            Money = 5000;
+            Money = 20000;
         }
     }
 }

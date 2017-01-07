@@ -70,7 +70,6 @@ namespace OnlineCourseCommunity.Controllers
                         FirstName = facebookLoginModel.FirstName,
                         LastName = facebookLoginModel.LastName,
                         AvatarUrl = facebookLoginModel.AvatarUrl,
-                        Email = facebookLoginModel.Email
                     };
                     profile = await this._profileService.CreateAsync(profile);
                 }
