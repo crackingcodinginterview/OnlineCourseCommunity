@@ -15,14 +15,6 @@ namespace OnlineCourseCommunity.Models.Course
         [Required(ErrorMessage = "Number Is Require!")]
         public int Number { get; set; }
     }
-    public class UnlockCourseBindingModel
-    {
-        /// <summary>
-        /// User Id
-        /// </summary>
-        [Required(ErrorMessage = "UserId Is Require!")]
-        public string UserId { get; set; }
-    }
     public class AddOrUpdateCourseBindingModel
     {
         /// <summary>

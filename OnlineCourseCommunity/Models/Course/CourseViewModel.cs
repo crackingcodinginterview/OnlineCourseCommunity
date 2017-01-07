@@ -18,15 +18,18 @@ namespace OnlineCourseCommunity.Models.Course
         {
 
         }
-        public UnlockCourseResponseModel(Library.Core.Domain.Bussiness.Course course)
+        public UnlockCourseResponseModel(Library.Core.Domain.Bussiness.Course course,
+            Profile profile)
         {
-            this.Import(course);
+            this.Import(course, profile);
         }
-        public void Import(Library.Core.Domain.Bussiness.Course course)
+        public void Import(Library.Core.Domain.Bussiness.Course course,
+            Profile profile)
         {
             base.Data = new
             {
-                DownloadLink = course.DownloadLink
+                DownloadLink = course.DownloadLink,
+                MoneyLeft = profile.Money
             };
         }
     }

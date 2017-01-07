@@ -266,7 +266,7 @@ namespace OnlineCourseCommunity.Controllers
                     course.PurchasedProfileList.Add(profile);
                     await this._profileService.UpdateAsync(profile);
                     await this._courseService.UpdateAsync(course);
-                    res.Import(course);
+                    res.Import(course, profile);
                     res.Success = true;
                     return this.Request.CreateResponse(HttpStatusCode.OK, res);
                 }
