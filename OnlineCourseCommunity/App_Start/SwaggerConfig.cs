@@ -19,8 +19,8 @@ namespace OnlineCourseCommunity
             GlobalConfiguration.Configuration 
                 .EnableSwagger(c =>
                     {
-                        c.RootUrl(req => "http://localhost:62033");
-                        //c.RootUrl(req => "http://onlinecoursecommunity.apphb.com");
+                        //c.RootUrl(req => "http://localhost:62033");
+                        c.RootUrl(req => "http://onlinecoursecommunity.apphb.com");
 
                         // By default, the service root url is inferred from the request used to access the docs.
                         // However, there may be situations (e.g. proxy and load-balanced environments) where this does not
