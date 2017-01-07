@@ -18,6 +18,7 @@ namespace OnlineCourseCommunity.Library.Core.Domain.Bussiness
         public string SourceLink { get; set; }
         public string DownloadLink { get; set; }
         public int Price { get; set; }
+        public Category Category { get; set; }
         public virtual ICollection<Profile> PurchaseUserList { get; set; }
         public Course()
         {
