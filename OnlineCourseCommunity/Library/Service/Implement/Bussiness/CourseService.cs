@@ -20,20 +20,17 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Bussiness
 
         public async Task<bool> IsUserPurchasedCourse(string courseId, string userId)
         {
-            var res = this._dbSet.Include(o => o.PurchaseUserList.Select(b => b.UserId == userId)).ToList();
-            return res.Count > 0;
+            return await this._dbSet.Where(o => o.PurchaseUserList.Any(b => b.Id == userId))
+                .CountAsync() > 0;
         }
         public async Task<PagedList<Course>> GetCourseList(string keySort = null, bool orderDescending = true,
             string keyWord = null, int pageIndex = 0, int? pageSize = null)
         {
             IQueryable<Course> query = this._dbSet.AsQueryable();
 
-            if (string.IsNullOrEmpty(keySort))
-            {
-                var property = typeof(Course).GetProperties().FirstOrDefault(p => string.Compare(p.Name, keySort,
-                StringComparison.OrdinalIgnoreCase) == 0);
-                keySort = (property == null) ? defaultKeySort : property.Name;
-            }
+            var property = typeof(Course).GetProperties().FirstOrDefault(p => string.Compare(p.Name, keySort,
+            StringComparison.OrdinalIgnoreCase) == 0);
+            keySort = (property == null) ? defaultKeySort : property.Name;
 
             if (!string.IsNullOrEmpty(keyWord))
             {

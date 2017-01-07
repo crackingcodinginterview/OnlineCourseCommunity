@@ -27,6 +27,13 @@ namespace OnlineCourseCommunity.Models.Course
             };
         }
     }
+    public class RatingCoureResponseModel : HmJsonResult
+    {
+        public RatingCoureResponseModel()
+        {
+
+        }
+    }
     public class IncreaseViewCountResponseModel : HmJsonResult
     {
 
@@ -102,7 +109,6 @@ namespace OnlineCourseCommunity.Models.Course
                 Rating = course.Rating,
                 SourceLink = course.SourceLink,
                 DownloadLink = course.DownloadLink,
-                PurchaseUserList = course.PurchaseUserList
             };
         }
     }

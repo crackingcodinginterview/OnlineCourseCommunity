@@ -6,6 +6,14 @@ using System.Web;
 
 namespace OnlineCourseCommunity.Models.Course
 {
+    public class RatingCoureBindingModel
+    {
+        /// <summary>
+        /// Number
+        /// </summary>
+        [Required(ErrorMessage = "Number Is Require!")]
+        public int Number { get; set; }
+    }
     public class UnlockCourseBindingModel
     {
         /// <summary>
@@ -48,13 +56,5 @@ namespace OnlineCourseCommunity.Models.Course
         /// </summary>
         [Required(ErrorMessage = "DownloadLink Of Course Is Require!")]
         public string DownloadLink { get; set; }
-    }
-    public class IncreaseViewCountBindingModel
-    {
-        /// <summary>
-        /// Number want increase
-        /// </summary>
-        [Required(ErrorMessage = "You Need To Declare Number Want To Increase")]
-        public int Number { get; set; }
     }
 }

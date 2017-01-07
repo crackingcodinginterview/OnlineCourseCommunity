@@ -82,9 +82,10 @@ namespace OnlineCourseCommunity.Controllers
                 if (course == null)
                     return this.Request.CreateResponse(HttpStatusCode.BadRequest, "Something Went Wrong!");
                 var userId = User.Identity.GetUserId();
-                if(userId != null)
+                var profile = await this._profileService.GetProfileByUserId(userId);
+                if (profile != null)
                 {
-                    var isPurchased = await this._courseService.IsUserPurchasedCourse(courseId, userId);
+                    var isPurchased = await this._courseService.IsUserPurchasedCourse(courseId, profile.Id);
                     if (isPurchased)
                     {
                         var res1 = new FullCourseResponseModel(course);
@@ -107,6 +108,7 @@ namespace OnlineCourseCommunity.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("")]
+        [Authorize(Roles = "ADMIN")]
         [SwaggerResponse(200, "Admin add new course to website", typeof(FullCourseResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
@@ -141,7 +143,7 @@ namespace OnlineCourseCommunity.Controllers
         /// Unlock course
         /// </summary>
         /// <returns></returns>
-        [HttpPut]
+        [HttpGet]
         [Route("{courseId}/Unlock")]
         [Authorize]
         [SwaggerResponse(200, "Unlock course", typeof(UnlockCourseResponseModel))]
@@ -173,23 +175,52 @@ namespace OnlineCourseCommunity.Controllers
             }
         }
         /// <summary>
-        /// Increase View Count
+        /// User Rating A Course
         /// </summary>
         /// <returns></returns>
         [HttpPut]
-        [Route("{courseId}")]
-        [SwaggerResponse(200, "Increase View Count", typeof(IncreaseViewCountResponseModel))]
+        [Route("{courseId}/RateCourse")]
+        [SwaggerResponse(200, "User Rating A Course", typeof(IncreaseViewCountResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
         [SwaggerResponse(500, "Internal Server Error")]
         [ValidateModelAttribute]
-        public async Task<HttpResponseMessage> IncreaseViewCount(string courseId, IncreaseViewCountBindingModel increaseViewCountBindingModel)
+        public async Task<HttpResponseMessage> RateCourse(string courseId, RatingCoureBindingModel ratingCoureBindingModel)
+        {
+            var res = new RatingCoureResponseModel();
+            try
+            {
+                var course = await this._courseService.GetById(courseId);
+                course.Rating += ratingCoureBindingModel.Number;
+                await this._courseService.UpdateAsync(course);
+                res.Success = true;
+                return this.Request.CreateResponse(HttpStatusCode.OK, res);
+
+            }
+            catch (ApplicationException ex)
+            {
+                res.ErrorMessages.Add(ex.Message);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
+            }
+        }
+        /// <summary>
+        /// Increase View Count
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{courseId}/IncreaseView")]
+        [SwaggerResponse(200, "Increase View Count")]
+        [SwaggerResponse(400, "Bad request")]
+        [SwaggerResponse(401, "Don't have permission")]
+        [SwaggerResponse(500, "Internal Server Error")]
+        [ValidateModelAttribute]
+        public async Task<HttpResponseMessage> IncreaseViewCount(string courseId)
         {
             var res = new IncreaseViewCountResponseModel();
             try
             {
                 var course = await this._courseService.GetById(courseId);
-                course.ViewCount += increaseViewCountBindingModel.Number;
+                course.ViewCount += 1;
                 await this._courseService.UpdateAsync(course);
                 res.Success = true;
                 return this.Request.CreateResponse(HttpStatusCode.OK, res);
