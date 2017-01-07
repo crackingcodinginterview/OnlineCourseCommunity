@@ -74,7 +74,7 @@ namespace OnlineCourseCommunity.Controllers
                     profile = await this._profileService.CreateAsync(profile);
                 }
                 var localAccessToken = this._userService.GenerateLocalAccessTokenResponse(user);
-                redirectUri = string.Format("{0}#access_token={1}&role={2}",
+                redirectUri = string.Format("{0};access_token={1};role={2}",
                                     redirectUri,
                                     localAccessToken,
                                     "USER");

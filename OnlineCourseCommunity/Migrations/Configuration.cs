@@ -1,5 +1,6 @@
 namespace OnlineCourseCommunity.Migrations
 {
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -26,6 +27,15 @@ namespace OnlineCourseCommunity.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+            //PasswordHasher
+            //context.Set<IdentityUser>().AddOrUpdate(
+            //    x => x.Id,
+            //    new IdentityUser
+            //    {
+            //        UserName = "netsuft",
+            //        PasswordHash = "",
+            //        Roles = new 
+            //    });
         }
     }
 }
