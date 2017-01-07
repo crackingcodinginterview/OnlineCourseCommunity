@@ -17,18 +17,23 @@ using OnlineCourseCommunity.Filters;
 using OnlineCourseCommunity.Library.Core.Domain.Authentication;
 using OnlineCourseCommunity.Models.User;
 using Microsoft.AspNet.Identity.EntityFramework;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace OnlineCourseCommunity.Controllers
 {
     [RoutePrefix("api/Account")]
     public class AccountController : BaseController
     {
+        private readonly Cloudinary _cloudinaryService;
         private readonly IUserService _userService;
         private readonly IProfileService _profileService;
 
         public AccountController(IUserService userService,
-            IProfileService profileService)
+            IProfileService profileService,
+            Cloudinary cloudinaryService)
         {
+            this._cloudinaryService = cloudinaryService;
             this._userService = userService;
             this._profileService = profileService;
         }
@@ -64,12 +69,17 @@ namespace OnlineCourseCommunity.Controllers
                 if (user == null)
                 {
                     user = await this._userService.RegisterUserAsync(facebookLoginModel.Provider, facebookLoginModel.ProviderName, "USER");
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(facebookLoginModel.AvatarUrl)
+                    };
+                    var uploadResult = await this._cloudinaryService.UploadAsync(uploadParams);
                     var profile = new Profile()
                     {
                         UserId = user.Id,
                         FirstName = facebookLoginModel.FirstName,
                         LastName = facebookLoginModel.LastName,
-                        AvatarUrl = facebookLoginModel.AvatarUrl,
+                        AvatarUrl = uploadResult.Uri.ToString(),
                     };
                     profile = await this._profileService.CreateAsync(profile);
                 }
@@ -90,7 +100,7 @@ namespace OnlineCourseCommunity.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize]
         [Route("GetProfile", Name = "GetProfile")]
         [SwaggerResponse(200, "Return profile of current user", typeof(ProfileResponseModel))]
         [SwaggerResponse(400, "Bad request")]

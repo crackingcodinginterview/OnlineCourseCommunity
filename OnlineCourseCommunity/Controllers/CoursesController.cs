@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using Microsoft.AspNet.Identity;
 using OnlineCourseCommunity.Filters;
 using OnlineCourseCommunity.Library.Core.Domain.Bussiness;
 using OnlineCourseCommunity.Library.Service.Interface.Authentication;
@@ -18,13 +20,16 @@ namespace OnlineCourseCommunity.Controllers
     [RoutePrefix("api/Courses")]
     public class CoursesController : ApiController
     {
+        private readonly Cloudinary _cloudinaryService;
         private readonly ICourseService _courseService;
         private readonly IUserService _userService;
         private readonly IProfileService _profileService;
         public CoursesController(ICourseService courseService,
             IUserService userService,
-            IProfileService profileService)
+            IProfileService profileService,
+            Cloudinary cloudinaryService)
         {
+            this._cloudinaryService = cloudinaryService;
             this._courseService = courseService;
             this._userService = userService;
             this._profileService = profileService;
@@ -123,10 +128,15 @@ namespace OnlineCourseCommunity.Controllers
             try
             {
                 var userId = User.Identity.GetUserId();
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(addOrUpdateCourseBindingModel.ImageUrl)
+                };
+                var uploadResult = await this._cloudinaryService.UploadAsync(uploadParams);
                 var course = new Course()
                 {
                     Name = addOrUpdateCourseBindingModel.Name,
-                    ImageUrl = addOrUpdateCourseBindingModel.ImageUrl,
+                    ImageUrl = uploadResult.Uri.ToString(),
                     SourceLink = addOrUpdateCourseBindingModel.SourceLink,
                     AuthorName = addOrUpdateCourseBindingModel.AuthorName,
                     Description = addOrUpdateCourseBindingModel.Description,
@@ -166,10 +176,15 @@ namespace OnlineCourseCommunity.Controllers
             try
             {
                 var course = await this._courseService.GetById(courseId);
-                if(course != null)
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(addOrUpdateCourseBindingModel.ImageUrl)
+                };
+                var uploadResult = await this._cloudinaryService.UploadAsync(uploadParams);
+                if (course != null)
                 {
                     course.Name = addOrUpdateCourseBindingModel.Name;
-                    course.ImageUrl = addOrUpdateCourseBindingModel.ImageUrl;
+                    course.ImageUrl = uploadResult.Uri.ToString();
                     course.SourceLink = addOrUpdateCourseBindingModel.SourceLink;
                     course.AuthorName = addOrUpdateCourseBindingModel.AuthorName;
                     course.Description = addOrUpdateCourseBindingModel.Description;
