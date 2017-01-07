@@ -256,6 +256,9 @@
     <EmbeddedResource Include="Migrations\201701070157134_AddProfilePriceAndRemoveUserEmail.resx">
       <DependentUpon>201701070157134_AddProfilePriceAndRemoveUserEmail.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701070351258_AddCouseCategory.resx">
+      <DependentUpon>201701070351258_AddCouseCategory.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SwaggerXml\SwaggerUIEnableBearerToken.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -306,6 +309,10 @@
     <Compile Include="Migrations\201701070157134_AddProfilePriceAndRemoveUserEmail.cs" />
     <Compile Include="Migrations\201701070157134_AddProfilePriceAndRemoveUserEmail.Designer.cs">
       <DependentUpon>201701070157134_AddProfilePriceAndRemoveUserEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701070351258_AddCouseCategory.cs" />
+    <Compile Include="Migrations\201701070351258_AddCouseCategory.Designer.cs">
+      <DependentUpon>201701070351258_AddCouseCategory.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\AccountBindingModel.cs" />
