@@ -112,7 +112,7 @@ namespace OnlineCourseCommunity.Controllers
             try
             {
                 var user = await this._userService
-                    .RegisterUserAsync(registerBindingModel.UserName, registerBindingModel.Password);
+                    .RegisterUserAsync(registerBindingModel.UserName, registerBindingModel.Password, "USER");
                 if(user != null)
                 {
                     var profile = new Profile()

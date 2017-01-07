@@ -35,18 +35,20 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Authentication
         }
         public async Task<ClaimsIdentity> CreateIdentityAsync(IdentityUser user)
         {
+            var role = await this.GetRoleAsync(user.Id);
             ClaimsIdentity identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
-            identity.AddClaim(new Claim(ClaimTypes.Role, "USER"));
+            identity.AddClaim(new Claim(ClaimTypes.Role, role));
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
             return identity;
         }
-        public string GenerateLocalAccessTokenResponse(IdentityUser user)
+        public async Task<string> GenerateLocalAccessTokenResponse(IdentityUser user)
         {
+            var role = await this.GetRoleAsync(user.Id);
             var tokenExpiration = TimeSpan.FromDays(1);
             ClaimsIdentity identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
-            identity.AddClaim(new Claim(ClaimTypes.Role, "USER"));
+            identity.AddClaim(new Claim(ClaimTypes.Role, role));
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
             var props = new AuthenticationProperties()
             {
@@ -57,7 +59,7 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Authentication
             var accessToken = Startup.OAuthBearerOptions.AccessTokenFormat.Protect(ticket);
             return accessToken;
         }
-        public async Task<IdentityUser> RegisterUserAsync(string username, string password)
+        public async Task<IdentityUser> RegisterUserAsync(string username, string password, string role)
         {
             var currentUser = await FindUserAsync(username, password);
             if (currentUser != null)
@@ -66,27 +68,27 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Authentication
             {
                 UserName = username
             };
-            return await RegisterUserAsync(user, password);
+            return await RegisterUserAsync(user, password, role);
         }
-        public async Task<IdentityUser> RegisterUserAsync(IdentityUser user, string password)
+        public async Task<IdentityUser> RegisterUserAsync(IdentityUser user, string password, string role)
         {
             var userCreateResult = await this._userManager.CreateAsync(user, password);
             if (!userCreateResult.Succeeded)
                 throw new ApplicationException("Add User Failed!");
-            var isRoleExist = await this._roleManager.RoleExistsAsync("USER");
-            if (!isRoleExist)
-            {
-                var roleResult = await this._roleManager.CreateAsync(new IdentityRole("USER"));
-                if (!roleResult.Succeeded)
-                    throw new ApplicationException("Creating role failed with error(s): " + roleResult.Errors);
-            }
-            var isInRole = await this._userManager.IsInRoleAsync(user.Id, "USER");
-            if (!isInRole)
-            {
-                var addToRoleResult = await this._userManager.AddToRoleAsync(user.Id, "USER");
+            //var isRoleExist = await this._roleManager.RoleExistsAsync("USER");
+            //if (!isRoleExist)
+            //{
+            //    var roleResult = await this._roleManager.CreateAsync(new IdentityRole("USER"));
+            //    if (!roleResult.Succeeded)
+            //        throw new ApplicationException("Creating role failed with error(s): " + roleResult.Errors);
+            //}
+            //var isInRole = await this._userManager.IsInRoleAsync(user.Id, "USER");
+            //if (!isInRole)
+            //{
+                var addToRoleResult = await this._userManager.AddToRoleAsync(user.Id, role);
                 if (!addToRoleResult.Succeeded)
                     throw new ApplicationException("Add To Role Failed!");
-            }
+            //}
             return user;
         }
 
@@ -94,9 +96,26 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Authentication
         {
             return await this._userManager.FindAsync(userName, password);
         }
-        public async Task<string> FindUserAsync(string userId)
+        public async Task<string> GetRoleAsync(string userId)
         {
             return (await this._userManager.GetRolesAsync(userId)).FirstOrDefault().ToString();
+        }
+        public async Task<string[]> AddRoleList(string[] roles)
+        {
+            foreach(var role in roles)
+            {
+                await this.AddRole(role);
+            }
+            return roles;
+        }
+        public async Task<string> AddRole(string role)
+        {
+            var isRoleExist = await this._roleManager.RoleExistsAsync(role);
+            if (!isRoleExist)
+            {
+                var roleResult = await this._roleManager.CreateAsync(new IdentityRole(role));
+            }
+            return role;
         }
     }
 }

@@ -63,7 +63,7 @@ namespace OnlineCourseCommunity.Controllers
                 IdentityUser user = await this._userService.FindUserAsync(facebookLoginModel.Provider, facebookLoginModel.ProviderName);
                 if (user == null)
                 {
-                    user = await this._userService.RegisterUserAsync(facebookLoginModel.Provider, facebookLoginModel.ProviderName);
+                    user = await this._userService.RegisterUserAsync(facebookLoginModel.Provider, facebookLoginModel.ProviderName, "USER");
                     var profile = new Profile()
                     {
                         UserId = user.Id,
@@ -73,7 +73,7 @@ namespace OnlineCourseCommunity.Controllers
                     };
                     profile = await this._profileService.CreateAsync(profile);
                 }
-                var localAccessToken = this._userService.GenerateLocalAccessTokenResponse(user);
+                var localAccessToken = await this._userService.GenerateLocalAccessTokenResponse(user);
                 redirectUri = string.Format("{0};access_token={1};role={2}",
                                     redirectUri,
                                     localAccessToken,
