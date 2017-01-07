@@ -31,7 +31,6 @@ namespace OnlineCourseCommunity
             HttpConfiguration config = new HttpConfiguration();
             config.DependencyResolver = new NinjectResolver(NinjectConfig.CreateKernel());
             WebApiConfig.Register(config);
-            //app.UseCors(CorsOptions.AllowAll);
             app.UseWebApi(config);
         }
         public void ConfigureOAuth(IAppBuilder app)
