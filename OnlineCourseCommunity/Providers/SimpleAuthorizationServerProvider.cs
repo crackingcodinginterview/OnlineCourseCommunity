@@ -44,8 +44,8 @@ namespace OnlineCourseCommunity.Providers
         }
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
         {
-            context.AdditionalResponseParameters.Add("userID", context.Identity.FindFirstValue(ClaimTypes.Role));
-            context.AdditionalResponseParameters.Add("role", context.Identity.FindFirstValue(ClaimTypes.NameIdentifier));
+            //context.AdditionalResponseParameters.Add("role", context.Identity.FindFirstValue(ClaimTypes.Role));
+            //context.AdditionalResponseParameters.Add("userId", context.Identity.FindFirstValue(ClaimTypes.NameIdentifier));
 
             return Task.FromResult<object>(null);
         }

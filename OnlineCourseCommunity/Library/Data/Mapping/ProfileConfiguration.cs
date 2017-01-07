@@ -20,12 +20,12 @@ namespace OnlineCourseCommunity.Library.Data.Mapping
             this.HasRequired(o => o.User);
                  
             this.HasMany(a => a.PurchaseCourseList)
-                .WithMany(b => b.PurchaseUserList)
+                .WithMany(b => b.PurchasedProfileList)
                 .Map(r =>
                 {
-                    r.MapLeftKey("UserId");
+                    r.MapLeftKey("ProfileId");
                     r.MapRightKey("CourseId");
-                    r.ToTable("UserCourse");
+                    r.ToTable("ProfileCourse");
                 });
         }
     }

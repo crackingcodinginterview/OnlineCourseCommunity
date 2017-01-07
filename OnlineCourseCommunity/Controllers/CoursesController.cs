@@ -48,8 +48,11 @@ namespace OnlineCourseCommunity.Controllers
             try
             {
                 var courses = await this._courseService.GetCourseList(keySort, orderDescending, keyWord, pageIndex, pageSize);
-                if(courses == null || !courses.Any())
+                if (courses == null || !courses.Any())
+                {
+                    res.ErrorMessages.Add("Cannot Find Any Course Match With Id!");
                     return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
+                }
                 res.Import(courses.PageIndex, courses.PageSize,
                     courses.TotalCount, courses.TotalPages,
                     courses.HasPreviousPage, courses.HasNextPage,
@@ -57,7 +60,7 @@ namespace OnlineCourseCommunity.Controllers
                 res.Success = true;
                 return this.Request.CreateResponse(HttpStatusCode.OK, res);
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
                 res.ErrorMessages.Add(ex.Message);
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
@@ -108,25 +111,31 @@ namespace OnlineCourseCommunity.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("")]
-        [Authorize(Roles = "ADMIN")]
+        [Authorize]
         [SwaggerResponse(200, "Admin add new course to website", typeof(FullCourseResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
         [SwaggerResponse(500, "Internal Server Error")]
         [ValidateModelAttribute]
-        public async Task<HttpResponseMessage> AddNewCourse([FromBody] AddCourseBindingModel addCourseBindingModel)
+        public async Task<HttpResponseMessage> AddNewCourse([FromBody] AddOrUpdateCourseBindingModel addOrUpdateCourseBindingModel)
         {
             var res = new FullCourseResponseModel();
             try
             {
+                var userId = User.Identity.GetUserId();
                 var course = new Course()
                 {
-                    Name = addCourseBindingModel.Name,
-                    ImageUrl = addCourseBindingModel.ImageUrl,
-                    SourceLink = addCourseBindingModel.SourceLink,
-                    AuthorName = addCourseBindingModel.AuthorName,
-                    Description = addCourseBindingModel.Description,
-                    DownloadLink = addCourseBindingModel.DownloadLink
+                    Name = addOrUpdateCourseBindingModel.Name,
+                    ImageUrl = addOrUpdateCourseBindingModel.ImageUrl,
+                    SourceLink = addOrUpdateCourseBindingModel.SourceLink,
+                    AuthorName = addOrUpdateCourseBindingModel.AuthorName,
+                    Description = addOrUpdateCourseBindingModel.Description,
+                    DownloadLink = addOrUpdateCourseBindingModel.DownloadLink,
+                    AboutThisCourse = addOrUpdateCourseBindingModel.AboutThisCourse,
+                    Price = addOrUpdateCourseBindingModel.Price,
+                    Category = addOrUpdateCourseBindingModel.Category,
+                    SubCategory = addOrUpdateCourseBindingModel.SubCategory,
+                    OwnerId = userId
                 };
                 await this._courseService.CreateAsync(course);
                 res.Import(course);
@@ -140,10 +149,86 @@ namespace OnlineCourseCommunity.Controllers
             }
         }
         /// <summary>
+        /// Admin update a course information
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("{courseId}")]
+        [Authorize]
+        [SwaggerResponse(200, "Admin update a course information", typeof(FullCourseResponseModel))]
+        [SwaggerResponse(400, "Bad request")]
+        [SwaggerResponse(401, "Don't have permission")]
+        [SwaggerResponse(500, "Internal Server Error")]
+        [ValidateModelAttribute]
+        public async Task<HttpResponseMessage> UpdateExistingCourse(string courseId, [FromBody] AddOrUpdateCourseBindingModel addOrUpdateCourseBindingModel)
+        {
+            var res = new FullCourseResponseModel();
+            try
+            {
+                var course = await this._courseService.GetById(courseId);
+                if(course != null)
+                {
+                    course.Name = addOrUpdateCourseBindingModel.Name;
+                    course.ImageUrl = addOrUpdateCourseBindingModel.ImageUrl;
+                    course.SourceLink = addOrUpdateCourseBindingModel.SourceLink;
+                    course.AuthorName = addOrUpdateCourseBindingModel.AuthorName;
+                    course.Description = addOrUpdateCourseBindingModel.Description;
+                    course.DownloadLink = addOrUpdateCourseBindingModel.DownloadLink;
+                    course.AboutThisCourse = addOrUpdateCourseBindingModel.AboutThisCourse;
+                    course.Price = addOrUpdateCourseBindingModel.Price;
+                    course.Category = addOrUpdateCourseBindingModel.Category;
+                    course.SubCategory = addOrUpdateCourseBindingModel.SubCategory;
+                    await this._courseService.UpdateAsync(course);
+                    res.Import(course);
+                    res.Success = true;
+                    return this.Request.CreateResponse(HttpStatusCode.OK, res);
+                }
+                res.ErrorMessages.Add("Cannot Find Any Course Match With Id!");
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
+            }
+            catch (Exception ex)
+            {
+                res.ErrorMessages.Add(ex.Message);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
+            }
+        }
+        /// <summary>
+        /// Admin Delete Course
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("{courseId}")]
+        [Authorize]
+        [SwaggerResponse(200, "Admin Delete Course", typeof(DeleteCourseResponseModel))]
+        [SwaggerResponse(400, "Bad request")]
+        [SwaggerResponse(401, "Don't have permission")]
+        [SwaggerResponse(500, "Internal Server Error")]
+        [ValidateModelAttribute]
+        public async Task<HttpResponseMessage> DeleteCourse(string courseId)
+        {
+            var res = new DeleteCourseResponseModel();
+            try
+            {
+                var course = await this._courseService.GetById(courseId);
+                if (course != null)
+                {
+                    res.Success = true;
+                    return this.Request.CreateResponse(HttpStatusCode.OK, res);
+                }
+                res.ErrorMessages.Add("Cannot Find Any Course Match With Id!");
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
+            }
+            catch (Exception ex)
+            {
+                res.ErrorMessages.Add(ex.Message);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
+            }
+        }
+        /// <summary>
         /// Unlock course
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPut]
         [Route("{courseId}/Unlock")]
         [Authorize]
         [SwaggerResponse(200, "Unlock course", typeof(UnlockCourseResponseModel))]
@@ -159,16 +244,20 @@ namespace OnlineCourseCommunity.Controllers
                 var userId = User.Identity.GetUserId();
                 var profile = await this._profileService.GetProfileByUserId(userId);
                 var course = await this._courseService.GetById(courseId);
-                    profile.Money -= 100;
-                    course.PurchaseUserList.Add(profile);
+                if(profile.Money > course.Price)
+                {
+                    profile.Money -= course.Price;
+                    course.PurchasedProfileList.Add(profile);
                     await this._profileService.UpdateAsync(profile);
                     await this._courseService.UpdateAsync(course);
                     res.Import(course);
                     res.Success = true;
-                return this.Request.CreateResponse(HttpStatusCode.OK, res);
-
+                    return this.Request.CreateResponse(HttpStatusCode.OK, res);
+                }
+                res.ErrorMessages.Add("You Don't Have Enough Money!");
+                return this.Request.CreateResponse(HttpStatusCode.BadGateway, res);
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
                 res.ErrorMessages.Add(ex.Message);
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
@@ -191,13 +280,17 @@ namespace OnlineCourseCommunity.Controllers
             try
             {
                 var course = await this._courseService.GetById(courseId);
-                course.Rating += ratingCoureBindingModel.Number;
-                await this._courseService.UpdateAsync(course);
-                res.Success = true;
-                return this.Request.CreateResponse(HttpStatusCode.OK, res);
-
+                if (course != null)
+                {
+                    course.Rating += ratingCoureBindingModel.Number;
+                    await this._courseService.UpdateAsync(course);
+                    res.Success = true;
+                    return this.Request.CreateResponse(HttpStatusCode.OK, res);
+                }
+                res.ErrorMessages.Add("Cannot Find Any Course Match With This Id!");
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
                 res.ErrorMessages.Add(ex.Message);
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
@@ -207,7 +300,7 @@ namespace OnlineCourseCommunity.Controllers
         /// Increase View Count
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPut]
         [Route("{courseId}/IncreaseView")]
         [SwaggerResponse(200, "Increase View Count")]
         [SwaggerResponse(400, "Bad request")]
@@ -220,13 +313,17 @@ namespace OnlineCourseCommunity.Controllers
             try
             {
                 var course = await this._courseService.GetById(courseId);
-                course.ViewCount += 1;
-                await this._courseService.UpdateAsync(course);
-                res.Success = true;
-                return this.Request.CreateResponse(HttpStatusCode.OK, res);
-
+                if(course != null)
+                {
+                    course.ViewCount += 1;
+                    await this._courseService.UpdateAsync(course);
+                    res.Success = true;
+                    return this.Request.CreateResponse(HttpStatusCode.OK, res);
+                }
+                res.ErrorMessages.Add("Cannot Find Any Course Match With This Id!");
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
                 res.ErrorMessages.Add(ex.Message);
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);

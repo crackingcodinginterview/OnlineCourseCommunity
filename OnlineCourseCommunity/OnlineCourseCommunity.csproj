@@ -265,6 +265,12 @@
     <EmbeddedResource Include="Migrations\201701070736387_ChangeCourseModel.resx">
       <DependentUpon>201701070736387_ChangeCourseModel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701071111192_ChangeProfileModel.resx">
+      <DependentUpon>201701071111192_ChangeProfileModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701071203086_Test.resx">
+      <DependentUpon>201701071203086_Test.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SwaggerXml\SwaggerUIEnableBearerToken.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -326,6 +332,14 @@
     <Compile Include="Migrations\201701070736387_ChangeCourseModel.cs" />
     <Compile Include="Migrations\201701070736387_ChangeCourseModel.Designer.cs">
       <DependentUpon>201701070736387_ChangeCourseModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701071111192_ChangeProfileModel.cs" />
+    <Compile Include="Migrations\201701071111192_ChangeProfileModel.Designer.cs">
+      <DependentUpon>201701071111192_ChangeProfileModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701071203086_Test.cs" />
+    <Compile Include="Migrations\201701071203086_Test.Designer.cs">
+      <DependentUpon>201701071203086_Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\AccountBindingModel.cs" />

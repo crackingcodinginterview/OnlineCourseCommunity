@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnlineCourseCommunity.Library.Core;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace OnlineCourseCommunity.Models.Course
         [Required(ErrorMessage = "UserId Is Require!")]
         public string UserId { get; set; }
     }
-    public class AddCourseBindingModel
+    public class AddOrUpdateCourseBindingModel
     {
         /// <summary>
         /// Name
@@ -56,5 +57,20 @@ namespace OnlineCourseCommunity.Models.Course
         /// </summary>
         [Required(ErrorMessage = "DownloadLink Of Course Is Require!")]
         public string DownloadLink { get; set; }
+        /// <summary>
+        /// Price Of Course
+        /// </summary>
+        [Required(ErrorMessage = "Price Of Course Is Require!")]
+        public int Price { get; set; }
+        /// <summary>
+        /// Category
+        /// </summary>
+        [Required(ErrorMessage = "Category Of Course Is Require!")]
+        public Category Category { get; set; }
+        /// <summary>
+        /// SubCategory
+        /// </summary>
+        [Required(ErrorMessage = "SubCategory Of Course Is Require!")]
+        public SubCategory SubCategory { get; set; }
     }
 }

@@ -36,10 +36,11 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Authentication
         public async Task<ClaimsIdentity> CreateIdentityAsync(IdentityUser user)
         {
             var role = await this.GetRoleAsync(user.Id);
-            ClaimsIdentity identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
-            identity.AddClaim(new Claim(ClaimTypes.Role, role));
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            ClaimsIdentity identity = await this._userManager.CreateIdentityAsync(user,
+                OAuthDefaults.AuthenticationType);
+            //identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+            //identity.AddClaim(new Claim(ClaimTypes.Role, role));
+            //identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
             return identity;
         }
         public async Task<string> GenerateLocalAccessTokenResponse(IdentityUser user)

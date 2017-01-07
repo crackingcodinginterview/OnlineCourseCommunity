@@ -23,7 +23,7 @@ namespace OnlineCourseCommunity.Library.Core.Domain.Bussiness
         public SubCategory SubCategory { get; set; }
         public string OwnerId { get; set; }
         public virtual IdentityUser User { get; set; }
-        public virtual ICollection<Profile> PurchaseUserList { get; set; }
+        public virtual ICollection<Profile> PurchasedProfileList { get; set; }
         public Course()
         {
             Rating = 0;

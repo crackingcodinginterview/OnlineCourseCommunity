@@ -8,7 +8,10 @@ using OnlineCourseCommunity.Library.Core.Domain.Bussiness;
 
 namespace OnlineCourseCommunity.Models.Course
 {
+    public class DeleteCourseResponseModel : HmJsonResult
+    {
 
+    }
     public class UnlockCourseResponseModel : HmJsonResult
     {
         public UnlockCourseResponseModel()

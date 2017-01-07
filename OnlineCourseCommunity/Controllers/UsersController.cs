@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using OnlineCourseCommunity.Filters;
 using OnlineCourseCommunity.Library.Core.Domain.Authentication;
 using OnlineCourseCommunity.Library.Service.Interface.Authentication;
@@ -29,32 +28,27 @@ namespace OnlineCourseCommunity.Controllers
         }
 
         /// <summary>
-        /// Return profile of current user
+        /// Return Profile List With Pagination
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         [Route("")]
-        [Authorize(Roles = "ADMIN")]
-        [SwaggerResponse(200, "Return profile of current user", typeof(UserInforResponseModel))]
+        [SwaggerResponse(200, "Return Profile List With Pagination", typeof(UserInforResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
         [SwaggerResponse(500, "Internal Server Error")]
         [ValidateModelAttribute]
-        public async Task<HttpResponseMessage> GetAllUsers(string userId)
+        public async Task<HttpResponseMessage> GetUserList()
         {
+            var userId = User.Identity.GetUserId();
+            var role = await this._userService.GetRoleAsync(userId);
             var res = new UserInforResponseModel();
             try
             {
-                var user = await this._userService.FindByIdAsync(userId);
-                if (user != null)
-                {
-                    res.Import(user);
-                    res.Success = true;
-                    return this.Request.CreateResponse(HttpStatusCode.OK, res);
-                }
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
                 res.ErrorMessages.Add(ex.Message);
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
@@ -65,8 +59,8 @@ namespace OnlineCourseCommunity.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("")]
-        [Authorize(Roles = "ADMIN")]
+        [Route("{userId}")]
+        [Authorize]
         [SwaggerResponse(200, "Return profile of current user", typeof(UserInforResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
@@ -84,15 +78,15 @@ namespace OnlineCourseCommunity.Controllers
                     res.Success = true;
                     return this.Request.CreateResponse(HttpStatusCode.OK, res);
                 }
+                res.ErrorMessages.Add("Cannot Find Any User With This Id!");
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
                 res.ErrorMessages.Add(ex.Message);
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
             }
         }
-
         /// <summary>
         /// Register new user
         /// </summary>
@@ -125,7 +119,7 @@ namespace OnlineCourseCommunity.Controllers
                 }
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
                 res.ErrorMessages.Add(ex.Message);
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);

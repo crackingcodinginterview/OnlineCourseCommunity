@@ -18,9 +18,9 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Bussiness
         {
         }
 
-        public async Task<bool> IsUserPurchasedCourse(string courseId, string userId)
+        public async Task<bool> IsUserPurchasedCourse(string courseId, string profileId)
         {
-            return await this._dbSet.Where(o => o.PurchaseUserList.Any(b => b.Id == userId))
+            return await this._dbSet.Where(o => o.PurchasedProfileList.Any(b => b.Id == profileId))
                 .CountAsync() > 0;
         }
         public async Task<PagedList<Course>> GetCourseList(string keySort = null, bool orderDescending = true,

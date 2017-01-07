@@ -14,7 +14,7 @@ namespace OnlineCourseCommunity.Library.Data
         public Context()
             : base("Context")
         {
-
+            this.Configuration.LazyLoadingEnabled = true;
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

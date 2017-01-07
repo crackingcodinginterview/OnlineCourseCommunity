@@ -28,7 +28,7 @@ namespace OnlineCourseCommunity.Library.Service.Implement
             }
             catch(Exception ex)
             {
-                return null;
+                throw;
             }
         }
 
@@ -44,7 +44,7 @@ namespace OnlineCourseCommunity.Library.Service.Implement
             }
             catch(Exception ex)
             {
-                return false;
+                throw;
             }
         }
 
@@ -70,7 +70,7 @@ namespace OnlineCourseCommunity.Library.Service.Implement
             }
             catch(Exception ex)
             {
-                return null;
+                throw;
             }
         }
     }

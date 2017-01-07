@@ -40,46 +40,25 @@ namespace OnlineCourseCommunity.Migrations
             //        PasswordHash = "",
             //        Roles = new 
             //    });
-            //UserService
-            //var roleStore = new RoleStore<IdentityRole>(context);
-            //var userStore = new UserStore<IdentityUser>(context);
-            //PasswordHasher passwordHasher = new PasswordHasher();
-            //string[] roles = new string[] { "ADMIN", "USER" };
-            //foreach (string role in roles)
-            //{
-            //    if (!context.Roles.Any(r => r.Name == role))
-            //    {
-            //        await roleStore.CreateAsync(new IdentityRole(role));
-            //    }
-            //}
-            //var user = new IdentityUser
-            //{
-            //    UserName = "netsuft",
-            //    PasswordHash = passwordHasher.HashPassword("123456")
-            //};
-            //await userStore.CreateAsync(user);
-            //await userStore.AddToRoleAsync(user, "ADMIN");
-            //IUserService userService = new UserService(context);
-            //IProfileService profileService = new ProfileService(context);
-            //userService.AddRoleList(new string[] { "USER", "ADMIN" });
-            //IdentityUser user = await userService.RegisterUserAsync("netsuft", "123456", "ADMIN");
-            //var profile = new Profile()
-            //{
-            //    UserId = user.Id,
-            //    FirstName = "Net",
-            //    LastName = "Suft",
-            //    AvatarUrl = "",
-            //    Money = 1000000
-            //};
-            //profile = await profileService.CreateAsync(profile);
             //var roleStore = new RoleStore<IdentityRole>(context);
             //var roleManager = new RoleManager<IdentityRole>(roleStore);
             //var userStore = new UserStore<IdentityUser>(context);
             //var userManager = new UserManager<IdentityUser>(userStore);
-            //var user = new ApplicationUser { UserName = "sallen" };
-            //userManager.Create(user, "password");
+            //var user = new IdentityUser { UserName = "netsuft" };
+
+            //userManager.Create(user, "123456");
             //roleManager.Create(new IdentityRole { Name = "ADMIN" });
-            //userManager.AddToRole(user.Id, "admin");
+            //userManager.AddToRole(user.Id, "ADMIN");
+            //context.Set<Profile>().AddOrUpdate(
+            //    x => x.Id,
+            //    new Profile
+            //    {
+            //        FirstName = "NET",
+            //        LastName = "SUFT",
+            //        Money = 100000,
+            //        UserId = user.Id,
+            //        AvatarUrl = "http://lh4.ggpht.com/--ORv_VsDhhY/Vlpjquk2siI/AAAAAAABMnE/xwIGyrAABMo/s400/doraemon-new-series-doremon-moi-nhat3.jpg"
+            //    });
         }
     }
 }

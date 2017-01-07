@@ -90,7 +90,7 @@ namespace OnlineCourseCommunity.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "ADMIN")]
         [Route("GetProfile", Name = "GetProfile")]
         [SwaggerResponse(200, "Return profile of current user", typeof(ProfileResponseModel))]
         [SwaggerResponse(400, "Bad request")]
