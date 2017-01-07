@@ -16,6 +16,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Http;
 
 [assembly: OwinStartup(typeof(OnlineCourseCommunity.Startup))]
@@ -56,10 +57,8 @@ namespace OnlineCourseCommunity
                 //AppSecret = "91c4c27ae52c79811ca722de6bc01f61",
 
                 //production
-                AppId = "721385524694332",
-                AppSecret = "c0f5ebdeacfb21a5e563a59840f5b6e6",
-
-
+                AppId = WebConfigurationManager.AppSettings["facebook_app_id"],
+                AppSecret = WebConfigurationManager.AppSettings["facebook_app_secret"],
 
                 Provider = new FacebookAuthProvider()
             };

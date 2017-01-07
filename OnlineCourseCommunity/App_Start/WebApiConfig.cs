@@ -24,6 +24,9 @@ namespace OnlineCourseCommunity
             );
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            var objCacheCow = new CacheCow.Server.CachingHandler(config, "");
+            config.MessageHandlers.Add(objCacheCow);
         }
     }
 }
