@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Security;
 
 namespace OnlineCourseCommunity.Providers
 {
@@ -40,6 +41,13 @@ namespace OnlineCourseCommunity.Providers
             }
             ClaimsIdentity identity = await this._userService.CreateIdentityAsync(currentUser);
             context.Validated(identity);
+        }
+        public override Task TokenEndpoint(OAuthTokenEndpointContext context)
+        {
+            context.AdditionalResponseParameters.Add("userID", context.Identity.FindFirstValue(ClaimTypes.Role));
+            context.AdditionalResponseParameters.Add("role", context.Identity.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return Task.FromResult<object>(null);
         }
     }
 }

@@ -282,6 +282,8 @@ namespace OnlineCourseCommunity
                                                 access_token = "ve6oDw6vcKNAtBmjL9P6s4JTq1UKOlAB3p47",
                                                 expires_in = 31535999,
                                                 token_type = "bearer",
+                                                userId = "aaaaaa",
+                                                role = "fsafffffff"
                                     },
 
                             } }
@@ -361,6 +363,11 @@ namespace OnlineCourseCommunity
         /// 
         /// </summary>
         public string userId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string role { get; set; }
 
         /// <summary>
         /// .issued

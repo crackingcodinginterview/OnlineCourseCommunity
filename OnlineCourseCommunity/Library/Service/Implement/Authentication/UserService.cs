@@ -19,28 +19,29 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Authentication
     public class UserService : IUserService
     {
         private DbContext _ctx;
-        private UserManager<ApplicationUser> _userManager;
+        private UserManager<IdentityUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
 
         public UserService(DbContext context)
         {
             this._ctx = context;
-            this._userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_ctx));
+            this._userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_ctx));
             this._roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_ctx));
         }
 
-        public async Task<ApplicationUser> FindByIdAsync(string userId)
+        public async Task<IdentityUser> FindByIdAsync(string userId)
         {
             return await this._userManager.FindByIdAsync(userId);
         }
-        public async Task<ClaimsIdentity> CreateIdentityAsync(ApplicationUser user)
+        public async Task<ClaimsIdentity> CreateIdentityAsync(IdentityUser user)
         {
-            ClaimsIdentity identity = await this._userManager.CreateIdentityAsync(
-                user,
-                DefaultAuthenticationTypes.ExternalBearer);
+            ClaimsIdentity identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
+            identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.Role, "USER"));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
             return identity;
         }
-        public string GenerateLocalAccessTokenResponse(ApplicationUser user)
+        public string GenerateLocalAccessTokenResponse(IdentityUser user)
         {
             var tokenExpiration = TimeSpan.FromDays(1);
             ClaimsIdentity identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
@@ -56,18 +57,18 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Authentication
             var accessToken = Startup.OAuthBearerOptions.AccessTokenFormat.Protect(ticket);
             return accessToken;
         }
-        public async Task<ApplicationUser> RegisterUserAsync(string username, string password)
+        public async Task<IdentityUser> RegisterUserAsync(string username, string password)
         {
             var currentUser = await FindUserAsync(username, password);
             if (currentUser != null)
                 throw new ApplicationException("User already exist!");
-            ApplicationUser user = new ApplicationUser
+            IdentityUser user = new IdentityUser
             {
                 UserName = username
             };
             return await RegisterUserAsync(user, password);
         }
-        public async Task<ApplicationUser> RegisterUserAsync(ApplicationUser user, string password)
+        public async Task<IdentityUser> RegisterUserAsync(IdentityUser user, string password)
         {
             var userCreateResult = await this._userManager.CreateAsync(user, password);
             if (!userCreateResult.Succeeded)
@@ -89,9 +90,13 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Authentication
             return user;
         }
 
-        public async Task<ApplicationUser> FindUserAsync(string userName, string password)
+        public async Task<IdentityUser> FindUserAsync(string userName, string password)
         {
             return await this._userManager.FindAsync(userName, password);
+        }
+        public async Task<string> FindUserAsync(string userId)
+        {
+            return (await this._userManager.GetRolesAsync(userId)).FirstOrDefault().ToString();
         }
     }
 }

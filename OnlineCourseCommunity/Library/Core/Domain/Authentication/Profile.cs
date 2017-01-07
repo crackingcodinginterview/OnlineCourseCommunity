@@ -17,5 +17,9 @@ namespace OnlineCourseCommunity.Library.Core.Domain.Authentication
         public string UserId { get; set; }
         public virtual IdentityUser User { get; set; }
         public virtual ICollection<Course> PurchaseCourseList { get; set; }
+        public Profile()
+        {
+            Money = 5000;
+        }
     }
 }

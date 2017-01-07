@@ -1,7 +1,9 @@
 ﻿using Ninject;
 using OnlineCourseCommunity.Library.Data;
 using OnlineCourseCommunity.Library.Service.Implement.Authentication;
+using OnlineCourseCommunity.Library.Service.Implement.Bussiness;
 using OnlineCourseCommunity.Library.Service.Interface.Authentication;
+using OnlineCourseCommunity.Library.Service.Interface.Bussiness;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -19,6 +21,8 @@ namespace OnlineCourseCommunity.App_Start
 
             _kernel.Bind<DbContext>().To<Context>();
             _kernel.Bind<IUserService>().To<UserService>();
+            _kernel.Bind<IProfileService>().To<ProfileService>();
+            _kernel.Bind<ICourseService>().To<CourseService>();
 
             return _kernel;
         }

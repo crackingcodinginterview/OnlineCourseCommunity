@@ -16,6 +16,7 @@ using Swashbuckle.Swagger.Annotations;
 using OnlineCourseCommunity.Filters;
 using OnlineCourseCommunity.Library.Core.Domain.Authentication;
 using OnlineCourseCommunity.Models.User;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace OnlineCourseCommunity.Controllers
 {
@@ -23,10 +24,13 @@ namespace OnlineCourseCommunity.Controllers
     public class AccountController : BaseController
     {
         private readonly IUserService _userService;
+        private readonly IProfileService _profileService;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService,
+            IProfileService profileService)
         {
             this._userService = userService;
+            this._profileService = profileService;
         }
 
         /// <summary>
@@ -56,19 +60,28 @@ namespace OnlineCourseCommunity.Controllers
                 var queryString = Request.GetQueryNameValuePairs();
                 var redirectUri = queryString.FirstOrDefault(keyValue => string.Compare(keyValue.Key, "redirectUri", true) == 0).Value;
                 var facebookLoginModel = new FacebookDataModel(User.Identity as ClaimsIdentity);
-                ApplicationUser user = await this._userService.FindUserAsync(facebookLoginModel.Provider, facebookLoginModel.ProviderName);
+                IdentityUser user = await this._userService.FindUserAsync(facebookLoginModel.Provider, facebookLoginModel.ProviderName);
                 if (user == null)
                 {
-                    user = new ApplicationUser(facebookLoginModel);
-                    user = await this._userService.RegisterUserAsync(user, facebookLoginModel.ProviderName);
+                    user = await this._userService.RegisterUserAsync(facebookLoginModel.Provider, facebookLoginModel.ProviderName);
+                    var profile = new Profile()
+                    {
+                        UserId = user.Id,
+                        FirstName = facebookLoginModel.FirstName,
+                        LastName = facebookLoginModel.LastName,
+                        AvatarUrl = facebookLoginModel.AvatarUrl,
+                        Email = facebookLoginModel.Email
+                    };
+                    profile = await this._profileService.CreateAsync(profile);
                 }
                 var localAccessToken = this._userService.GenerateLocalAccessTokenResponse(user);
-                redirectUri = string.Format("{0}#access_token={1}",
+                redirectUri = string.Format("{0}#access_token={1}&role={2}",
                                     redirectUri,
-                                    localAccessToken);
+                                    localAccessToken,
+                                    "USER");
                 return Redirect(redirectUri);
             }
-            catch(ApplicationException ex)
+            catch (ApplicationException ex)
             {
                 return BadRequest("Something went wrong!");
             }
@@ -91,8 +104,8 @@ namespace OnlineCourseCommunity.Controllers
             try
             {
                 var userId = User.Identity.GetUserId();
-                var user = await this._userService.FindByIdAsync(userId);
-                res.Import(user);
+                var profile = await this._profileService.GetProfileByUserId(userId);
+                res.Import(profile);
                 res.Success = true;
                 return this.Request.CreateResponse(HttpStatusCode.OK, res);
             }

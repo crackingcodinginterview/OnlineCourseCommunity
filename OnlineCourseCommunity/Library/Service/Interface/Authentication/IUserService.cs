@@ -11,13 +11,14 @@ using System.Web;
 
 namespace OnlineCourseCommunity.Library.Service.Interface.Authentication
 {
-    public interface IUserService
+    public interface IUserService 
     {
-        Task<ClaimsIdentity> CreateIdentityAsync(ApplicationUser user);
-        Task<ApplicationUser> RegisterUserAsync(string username, string password);
-        Task<ApplicationUser> FindUserAsync(string userName, string password);
-        Task<ApplicationUser> FindByIdAsync(string userId);
-        string GenerateLocalAccessTokenResponse(ApplicationUser user);
-        Task<ApplicationUser> RegisterUserAsync(ApplicationUser user, string password);
+        Task<ClaimsIdentity> CreateIdentityAsync(IdentityUser user);
+        Task<IdentityUser> RegisterUserAsync(string username, string password);
+        Task<IdentityUser> FindUserAsync(string userName, string password);
+        Task<IdentityUser> FindByIdAsync(string userId);
+        string GenerateLocalAccessTokenResponse(IdentityUser user);
+        Task<IdentityUser> RegisterUserAsync(IdentityUser user, string password);
+        Task<string> FindUserAsync(string userId);
     }
 }
