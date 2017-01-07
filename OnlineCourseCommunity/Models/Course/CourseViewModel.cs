@@ -72,6 +72,9 @@ namespace OnlineCourseCommunity.Models.Course
         public string Name { get; set; }
         public double Rating { get; set; }
         public string ImageUrl { get; set; }
+        public int Price { get; set; }
+        public string Description { get; set; }
+        public string AuthorName { get; set; }
         public CoureBoxModel()
         {
 
@@ -83,6 +86,9 @@ namespace OnlineCourseCommunity.Models.Course
             Name = course.Name;
             Rating = course.Rating;
             ImageUrl = course.ImageUrl;
+            Price = course.Price;
+            Description = course.Description;
+            AuthorName = course.AuthorName;
         }
     }
     public class CoursePagingResponseModel : HmJsonResult
@@ -136,7 +142,11 @@ namespace OnlineCourseCommunity.Models.Course
                 ViewCount = course.ViewCount,
                 Rating = course.Rating,
                 SourceLink = course.SourceLink,
-                DownloadLink = course.DownloadLink,
+                Price = course.Price,
+                AboutThisCourse = course.AboutThisCourse,
+                Category = course.Category,
+                Subcategory = course.SubCategory,
+                DownloadLink = course.DownloadLink
             };
         }
     }
@@ -161,31 +171,10 @@ namespace OnlineCourseCommunity.Models.Course
                 ViewCount = course.ViewCount,
                 Rating = course.Rating,
                 SourceLink = course.SourceLink,
-            };
-        }
-    }
-    public class PurchasedResponseModel : HmJsonResult
-    {
-        public PurchasedResponseModel()
-        {
-
-        }
-        public PurchasedResponseModel(OnlineCourseCommunity.Library.Core.Domain.Bussiness.Course course)
-        {
-            this.Import(course);
-        }
-        public void Import(OnlineCourseCommunity.Library.Core.Domain.Bussiness.Course course)
-        {
-            base.Data = new
-            {
-                Name = course.Name,
-                ImageUrl = course.ImageUrl,
-                Description = course.Description,
-                AuthorName = course.AuthorName,
-                ViewCount = course.ViewCount,
-                Rating = course.Rating,
-                SourceLink = course.SourceLink,
-                DownloadLink = course.DownloadLink,
+                Price = course.Price,
+                AboutThisCourse = course.AboutThisCourse,
+                Category = course.Category,
+                Subcategory = course.SubCategory
             };
         }
     }
