@@ -280,6 +280,7 @@
     <Compile Include="Library\Core\Domain\BaseEntity.cs" />
     <Compile Include="Library\Core\Domain\Bussiness\Course.cs" />
     <Compile Include="Library\Core\DynamicSort.cs" />
+    <Compile Include="Library\Core\Enum.cs" />
     <Compile Include="Library\Core\IPagedList.cs" />
     <Compile Include="Library\Core\PagedList.cs" />
     <Compile Include="Library\Data\Context.cs" />
