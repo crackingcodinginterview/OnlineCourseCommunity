@@ -71,7 +71,7 @@ namespace OnlineCourseCommunity.Models.Course
     }
     public class CoureBoxModel
     {
-        public string CourseId { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public double Rating { get; set; }
         public string ImageUrl { get; set; }
@@ -85,7 +85,7 @@ namespace OnlineCourseCommunity.Models.Course
 
         public CoureBoxModel(Library.Core.Domain.Bussiness.Course course)
         {
-            CourseId = course.Id;
+            Id = course.Id;
             Name = course.Name;
             Rating = course.Rating;
             ImageUrl = course.ImageUrl;
@@ -138,6 +138,7 @@ namespace OnlineCourseCommunity.Models.Course
         {
             base.Data = new
             {
+                Id = course.Id,
                 Name = course.Name,
                 ImageUrl = course.ImageUrl,
                 Description = course.Description,
@@ -167,6 +168,7 @@ namespace OnlineCourseCommunity.Models.Course
         {
             base.Data = new
             {
+                Id = course.Id,
                 Name = course.Name,
                 ImageUrl = course.ImageUrl,
                 Description = course.Description,
@@ -178,6 +180,29 @@ namespace OnlineCourseCommunity.Models.Course
                 AboutThisCourse = course.AboutThisCourse,
                 Category = course.Category,
                 Subcategory = course.SubCategory
+            };
+        }
+    }
+    public class TamperCourseResponseModel : HmJsonResult
+    {
+        public TamperCourseResponseModel()
+        {
+
+        }
+        public TamperCourseResponseModel(string Name, string Description,
+            string AuthorName, string ImageUrl)
+        {
+            this.Import(Name, Description, AuthorName, ImageUrl);
+        }
+        public void Import(string Name, string Description,
+            string AuthorName, string ImageUrl)
+        {
+            base.Data = new
+            {
+                Name = Name,
+                ImageUrl = ImageUrl,
+                Description = Description,
+                AuthorName = AuthorName,
             };
         }
     }
