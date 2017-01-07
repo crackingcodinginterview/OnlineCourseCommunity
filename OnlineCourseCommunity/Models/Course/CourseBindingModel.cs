@@ -40,6 +40,10 @@ namespace OnlineCourseCommunity.Models.Course
         /// </summary>
         public string SourceLink { get; set; }
         /// <summary>
+        /// About This Course
+        /// </summary>
+        public string AboutThisCourse { get; set; }
+        /// <summary>
         /// Download Link
         /// </summary>
         [Required(ErrorMessage = "DownloadLink Of Course Is Require!")]

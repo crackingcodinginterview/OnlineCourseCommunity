@@ -15,7 +15,6 @@ namespace OnlineCourseCommunity
         {
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
-            //cors.SupportsCredentials = true;
             config.MapHttpAttributeRoutes();
             config.Filters.Add(new ValidateModelAttribute());
             config.Routes.MapHttpRoute(

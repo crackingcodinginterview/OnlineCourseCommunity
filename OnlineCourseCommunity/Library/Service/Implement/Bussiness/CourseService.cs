@@ -20,7 +20,8 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Bussiness
 
         public async Task<bool> IsUserPurchasedCourse(string courseId, string userId)
         {
-            return false;
+            var res = this._dbSet.Include(o => o.PurchaseUserList.Select(b => b.UserId == userId)).ToList();
+            return res.Count > 0;
         }
         public async Task<PagedList<Course>> GetCourseList(string keySort = null, bool orderDescending = true,
             string keyWord = null, int pageIndex = 0, int? pageSize = null)

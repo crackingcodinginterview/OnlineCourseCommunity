@@ -18,8 +18,11 @@ namespace OnlineCourseCommunity.Library.Core.Domain.Bussiness
         public string SourceLink { get; set; }
         public string DownloadLink { get; set; }
         public int Price { get; set; }
+        public string AboutThisCourse { get; set; }
         public Category Category { get; set; }
-        public Category SubCategory { get; set; }
+        public SubCategory SubCategory { get; set; }
+        public string OwnerId { get; set; }
+        public virtual IdentityUser User { get; set; }
         public virtual ICollection<Profile> PurchaseUserList { get; set; }
         public Course()
         {

@@ -52,12 +52,12 @@ namespace OnlineCourseCommunity
             var facebookAuthOptions = new FacebookAuthenticationOptions()
             {
                 //localhost
-                //AppId = "1258858804171988",
-                //AppSecret = "91c4c27ae52c79811ca722de6bc01f61",
+                AppId = "1258858804171988",
+                AppSecret = "91c4c27ae52c79811ca722de6bc01f61",
 
                 //production
-                AppId = "721385524694332",
-                AppSecret = "c0f5ebdeacfb21a5e563a59840f5b6e6",
+                //AppId = "721385524694332",
+                //AppSecret = "c0f5ebdeacfb21a5e563a59840f5b6e6",
 
 
 
