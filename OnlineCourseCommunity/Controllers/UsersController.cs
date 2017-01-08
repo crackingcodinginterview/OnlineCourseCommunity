@@ -32,19 +32,55 @@ namespace OnlineCourseCommunity.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize(Roles = "ADMIN")]
         [Route("")]
-        [SwaggerResponse(200, "Return Profile List With Pagination", typeof(UserInforResponseModel))]
+        [SwaggerResponse(200, "Return Profile List With Pagination", typeof(UserPagingResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
         [SwaggerResponse(500, "Internal Server Error")]
         [ValidateModelAttribute]
-        public async Task<HttpResponseMessage> GetUserList(string keySort = null, bool orderDescending = true,
-            string keyWord = null, int pageIndex = 0, int? pageSize = null)
+        public async Task<HttpResponseMessage> GetUserList()
         {
-            var res = new UserInforResponseModel();
+            var res = new UserPagingResponseModel();
             try
             {
+                var listUser = await this._userService.GetUserList();
+                res.Import(listUser);
+                res.Success = true;
+                return this.Request.CreateResponse(HttpStatusCode.OK, res);
+            }
+            catch (Exception ex)
+            {
+                res.ErrorMessages.Add(ex.Message);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
+            }
+        }
+        /// <summary>
+        /// Admin Delete User
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("{userId}")]
+        [Authorize(Roles = "ADMIN")]
+        [SwaggerResponse(200, "Admin Delete User", typeof(DeleteUserResponseModel))]
+        [SwaggerResponse(400, "Bad request")]
+        [SwaggerResponse(401, "Don't have permission")]
+        [SwaggerResponse(500, "Internal Server Error")]
+        [ValidateModelAttribute]
+        public async Task<HttpResponseMessage> DeleteCourse(string userId)
+        {
+            var res = new DeleteUserResponseModel();
+            try
+            {
+                var user = await this._userService.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    var profile = await this._profileService.GetProfileByUserId(user.Id);
+                    await this._profileService.DeleteAsync(profile);
+                    await this._userService.DeleteUserAsync(user);
+                    res.Success = true;
+                    return this.Request.CreateResponse(HttpStatusCode.OK, res);
+                }
+                res.ErrorMessages.Add("Cannot Find Any Course Match With Id!");
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, res);
             }
             catch (Exception ex)

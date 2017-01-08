@@ -28,6 +28,10 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Authentication
             this._userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_ctx));
             this._roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_ctx));
         }
+        public async Task<bool> DeleteUserAsync(IdentityUser user)
+        {
+            return (await this._userManager.DeleteAsync(user)).Succeeded;
+        }
         public async Task<IdentityUser> FindByIdAsync(string userId)
         {
             return await this._userManager.FindByIdAsync(userId);
@@ -87,6 +91,10 @@ namespace OnlineCourseCommunity.Library.Service.Implement.Authentication
         public async Task<string> GetRoleAsync(string userId)
         {
             return (await this._userManager.GetRolesAsync(userId)).FirstOrDefault().ToString();
+        }
+        public async Task<List<IdentityUser>> GetUserList()
+        {
+            return await this._userManager.Users.ToListAsync();
         }
     }
 }

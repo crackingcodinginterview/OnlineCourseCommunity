@@ -8,6 +8,32 @@ using System.Web;
 
 namespace OnlineCourseCommunity.Models.User
 {
+    public class UserModel
+    {
+        public string Id { get; set; }
+        public string UserName { get; set; }
+        public UserModel()
+        {
+
+        }
+        public UserModel(IdentityUser user)
+        {
+            this.Import(user);
+        }
+        public void Import(IdentityUser user)
+        {
+            Id = user.Id;
+            UserName = user.UserName;
+        }
+    }
+    
+    public class DeleteUserResponseModel : HmJsonResult
+    {
+        public DeleteUserResponseModel()
+        {
+
+        }
+    }
     public class UserInforResponseModel : HmJsonResult
     {
         public UserInforResponseModel()
@@ -22,8 +48,26 @@ namespace OnlineCourseCommunity.Models.User
         {
             base.Data = new
             {
-                UserId = user.Id,
+                Id = user.Id,
                 UserName = user.UserName
+            };
+        }
+    }
+    public class UserPagingResponseModel : HmJsonResult
+    {
+        public UserPagingResponseModel()
+        {
+
+        }
+        public UserPagingResponseModel(List<IdentityUser> listUser)
+        {
+            this.Import(listUser);
+        }
+        public void Import(List<IdentityUser> listUser)
+        {
+            base.Data = new
+            {
+                UserList = listUser.Select(o => new UserModel(o))
             };
         }
     }

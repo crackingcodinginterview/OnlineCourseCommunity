@@ -20,5 +20,7 @@ namespace OnlineCourseCommunity.Library.Service.Interface.Authentication
         Task<string> GenerateLocalAccessTokenResponse(IdentityUser user);
         Task<IdentityUser> RegisterUserAsync(IdentityUser user, string password, string role);
         Task<string> GetRoleAsync(string userId);
+        Task<bool> DeleteUserAsync(IdentityUser user);
+        Task<List<IdentityUser>> GetUserList();
     }
 }

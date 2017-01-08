@@ -1,4 +1,5 @@
-﻿using OnlineCourseCommunity.Library.Core;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using OnlineCourseCommunity.Library.Core;
 using OnlineCourseCommunity.Library.Core.Domain.Bussiness;
 using System;
 using System.Collections.Generic;

@@ -36,7 +36,8 @@ namespace OnlineCourseCommunity.Controllers
                 var courseImage = courseImageNode.Attributes["content"].Value.Trim();
                 Match match = Regex.Match(courseImage, @"480x270/(.+)\.jpg", RegexOptions.IgnoreCase);
                 var courseUrl = match.Success ? "https://udemy-images.udemy.com/course/750x422/" + match.Groups[1].Value + ".jpg": "";
-                res.Import(courseName, courseDescription, courseAuthor, courseImage);
+                res.Import(courseName, courseDescription, courseAuthor, courseUrl);
+                res.Success = true;
                 return Request.CreateResponse(HttpStatusCode.OK, res);
             }
             catch (Exception ex)
