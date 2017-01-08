@@ -33,6 +33,7 @@ namespace OnlineCourseCommunity.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
+        [Authorize(Roles = "ADMIN")]
         [SwaggerResponse(200, "Return Profile List With Pagination", typeof(UserPagingResponseModel))]
         [SwaggerResponse(400, "Bad request")]
         [SwaggerResponse(401, "Don't have permission")]
