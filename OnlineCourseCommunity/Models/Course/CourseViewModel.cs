@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using OnlineCourseCommunity.Library.Core.Domain.Bussiness;
+using OnlineCourseCommunity.Library.Core;
 
 namespace OnlineCourseCommunity.Models.Course
 {
@@ -78,6 +79,8 @@ namespace OnlineCourseCommunity.Models.Course
         public int Price { get; set; }
         public string Description { get; set; }
         public string AuthorName { get; set; }
+        public Category Category { get; set; }
+        public SubCategory SubCategory { get; set; }
         public CoureBoxModel()
         {
 
@@ -92,6 +95,8 @@ namespace OnlineCourseCommunity.Models.Course
             Price = course.Price;
             Description = course.Description;
             AuthorName = course.AuthorName;
+            Category = course.Category;
+            SubCategory = course.SubCategory;
         }
     }
     public class CoursePagingResponseModel : HmJsonResult
@@ -105,7 +110,8 @@ namespace OnlineCourseCommunity.Models.Course
             bool hasPreviousPage, bool hasNextPage,
             List<OnlineCourseCommunity.Library.Core.Domain.Bussiness.Course> courseList)
         {
-            this.Import(pageIndex, pageSize, totalCount, totalPage, hasPreviousPage, hasNextPage, courseList);
+            this.Import(pageIndex, pageSize, totalCount, totalPage, 
+                hasPreviousPage, hasNextPage, courseList);
         }
         public void Import(int pageIndex, int pageSize,
             int totalCount, int totalPage,

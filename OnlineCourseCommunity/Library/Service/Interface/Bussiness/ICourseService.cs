@@ -10,7 +10,8 @@ namespace OnlineCourseCommunity.Library.Service.Interface.Bussiness
 {
     public interface ICourseService : IBaseService<Course>
     {
-        Task<PagedList<Course>> GetCourseList(string keySort, bool orderDescending = true,
+        Task<PagedList<Course>> GetCourseList(
+            string keySort = null, bool orderDescending = true, string keyCompare = null,
             string keyWord = null, int pageIndex = 0, int? pageSize = null);
         Task<bool> IsUserPurchasedCourse(string courseId, string userId);
     }

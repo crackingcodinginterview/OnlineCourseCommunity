@@ -303,6 +303,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Library\Common\HmJsonResult.cs" />
+    <Compile Include="Library\Common\Linq.cs" />
     <Compile Include="Library\Core\Domain\Authentication\Profile.cs" />
     <Compile Include="Library\Core\Domain\BaseEntity.cs" />
     <Compile Include="Library\Core\Domain\Bussiness\Course.cs" />

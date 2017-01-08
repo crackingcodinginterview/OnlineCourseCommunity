@@ -47,12 +47,13 @@ namespace OnlineCourseCommunity.Controllers
         [SwaggerResponse(500, "Internal Server Error")]
         [ValidateModelAttribute]
         public async Task<HttpResponseMessage> GetCourseList(string keySort = null, bool orderDescending = true,
-            string keyWord = null,  int pageIndex = 0, int? pageSize = null)
+            string keyCompare = null, string keyWord = null,  int pageIndex = 0, int? pageSize = null)
         {
             var res = new CoursePagingResponseModel();
             try
             {
-                var courses = await this._courseService.GetCourseList(keySort, orderDescending, keyWord, pageIndex, pageSize);
+                var courses = await this._courseService.GetCourseList(keySort, orderDescending, keyCompare,
+                    keyWord, pageIndex, pageSize);
                 if (courses == null || !courses.Any())
                 {
                     res.ErrorMessages.Add("Cannot Find Any Course Match With Id!");
